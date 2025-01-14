@@ -1,0 +1,234 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.wrapper {
+  min-width: 100%;
+}
+.header {
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(#9fa3a6, #9c9cc3);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  position: fixed;
+}
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 30px;
+  height: 70px;
+  z-index: 100;
+}
+.header-logo {
+  width: 40px;
+  height: 40px;
+  background-color: #d3caca;
+  border-radius: 50%;
+  z-index: 5;
+  position: relative;
+  left: 0;
+  top: 0;
+}
+.menu-icon {
+  display: none;
+}
+.menu-list {
+  position: relative;
+}
+.menu-list > li {
+  margin-right: 50px;
+}
+.menu-list > li:last-child {
+  margin-right: 0;
+}
+
+.menu-link {
+  font-size: 20px;
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 2px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.menu-arrow {
+  display: none;
+}
+body._pc .menu-list > li:hover .menu-sub-list {
+  transform: translate(0px, 0px);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+  border-radius: 5px;
+}
+body._touch .menu-arrow {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 10px solid #fff;
+  margin: 0px 0px 0px 5px;
+  display: block;
+  width: 0;
+  height: 0;
+  transition: transform 0.3s ease 0s;
+}
+
+body._touch .menu-list > li {
+  display: flex;
+  align-items: center;
+}
+body._touch .menu-list > li._active .menu-sub-list {
+  transform: translate(0px, 0px);
+  opacity: 1;
+  pointer-events: all;
+  visibility: visible;
+}
+
+body._touch .menu-list > li._active .menu-arrow {
+  transform: rotate(-180deg);
+}
+body._touch .menu-link {
+  flex: 1 1 auto; /* Ссылка занимает оставшееся место */
+}
+.menu-sub-list {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 15px;
+  top: 80%;
+  min-width: 210px;
+  text-align: center;
+  border-radius: 5px;
+}
+.menu-sub-list > li {
+  margin-bottom: 10px;
+}
+.menu-sub-list > li:last-child {
+  margin-bottom: 0;
+}
+.menu-sub-link {
+  color: #fff;
+  font-size: 20px;
+  font-family: Heebo;
+  cursor: pointer;
+}
+
+@media (min-width: 767px) {
+  .menu-list {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  .menu-list > li {
+    padding: 10px 0px;
+  }
+  .menu-sub-list {
+    transform: translate(0px, 15%);
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: all 0.3s ease 0s;
+  }
+}
+
+@media (max-width: 767px) {
+  .menu-icon {
+    display: block;
+    width: 30px;
+    height: 18px;
+    position: relative;
+    z-index: 5;
+  }
+  .menu-icon span,
+  .menu-icon::before,
+  .menu-icon::after {
+    position: absolute;
+    width: 100%;
+    height: 10%;
+    background-color: black;
+    left: 0;
+    transition: all 0.3s ease 0s;
+  }
+  .menu-icon::before,
+  .menu-icon::after {
+    content: "";
+  }
+  .menu-icon::before {
+    top: 0;
+  }
+  .menu-icon::after {
+    bottom: 0;
+  }
+  .menu-icon span {
+    top: 50%;
+    transform: scale(1) translate(0px, -50%);
+    /* translate(x, y) перемещает элемент по осям X (горизонтально) и Y (вертикально): */
+    /* 0px — не перемещает элемент по оси X.
+     -50% — перемещает элемент вверх на половину его собственной высоты. 
+    Процентное значение в translate считается от размеров самого элемента. */
+  }
+
+  .menu-icon._active span {
+    transform: scale(0) translate(0px, -50%);
+  }
+  .menu-icon._active::before {
+    top: 50%;
+    transform: rotate(45deg) translate(0px, -50%);
+  }
+  .menu-icon._active::after {
+    top: 50%;
+    transform: rotate(-45deg) translate(0px, -50%);
+  }
+  .menu-body {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(193, 196, 196, 0.6);
+    padding: 100px 30px 30px 30px;
+    transition: all 0.3s ease 0s;
+  }
+  .menu-body._active {
+    left: 0;
+  }
+  .menu-list > li {
+    margin: 0px 0px 20px 0px;
+  }
+  .menu-list > li:last-child {
+    margin: 0px 0px 0px 0px;
+  }
+  .menu-link {
+    font-size: 24px;
+    color: #292828;
+  }
+  body._touch .menu-arrow {
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 10px solid #292828;
+    margin: 0px 0px 0px 5px;
+    display: block;
+    transition: transform 0.3s ease 0s;
+  }
+  .menu-list > li._active .menu-sub-list {
+    display: block;
+  }
+  .menu-sub-list {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    margin: 20px 0px 0px 0px;
+    display: none;
+    transition: all 0.3s ease 0s;
+  }
+  .menu-sub-link {
+    font-size: 20px;
+    color: #292828;
+  }
+}
