@@ -1,0 +1,133 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.caorusel {
+  max-width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+.caorusel .caorusel-item {
+  position: absolute;
+  inset: 0;
+}
+.caorusel .caorusel-item img {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+}
+.caorusel .caorusel-item .caorusel-content {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  padding-right: 30%;
+  transform: translateX(-50%);
+  width: 1140px;
+  max-width: 80%;
+  color: #fff;
+  text-shadow: 0 5px 10px #000;
+}
+.caorusel .caorusel-item .caorusel-content .caorusel-title {
+  font-size: 5em;
+  font-weight: bold;
+  text-shadow: 0 5px 4px #fff;
+  letter-spacing: 10px;
+  color: #fff;
+  line-height: 1.3em;
+}
+.caorusel .caorusel-item .caorusel-content .caorusel-description {
+  font-size: 1.5rem;
+  letter-spacing: 3px;
+  margin-bottom: 40px;
+}
+.caorusel .caorusel-item .caorusel-content .caorusel-button {
+  padding: 10px 25px;
+  font-size: 20px;
+  border-radius: 5px;
+  letter-spacing: 2px;
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  text-shadow: 0 5px 10px #fff;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease 0s;
+}
+.caorusel .caorusel-item .caorusel-content .caorusel-button:hover {
+  cursor: pointer;
+  background-color: #fff;
+  color: #000;
+  text-shadow: 0 5px 5px #858282;
+}
+.caorusel .caorusel-item:nth-child(1) {
+  z-index: 1;
+}
+.caorusel .caorusel-item:nth-child(1) .caorusel-title,
+.caorusel .caorusel-item:nth-child(1) .caorusel-description,
+.caorusel .caorusel-item:nth-child(1) .caorusel-button {
+  transform: translateY(50px);
+  opacity: 0;
+  animation: showContent 0.5s linear 1s forwards;
+  filter: blur(20px);
+}
+@keyframes showContent {
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+.caorusel .caorusel-item:nth-child(1) .caorusel-title {
+  animation-delay: 0.2s;
+}
+.caorusel .caorusel-item:nth-child(1) .caorusel-description {
+  animation-delay: 0.4s;
+}
+.caorusel .caorusel-item:nth-child(1) .caorusel-button {
+  animation-delay: 0.6s;
+}
+@media (max-width: 767px) {
+  .caorusel-content {
+    padding-right: 0px;
+  }
+  .caorusel .caorusel-title {
+    font-size: 30px;
+  }
+}
+.caorusel .thumbnail-list {
+  position: absolute;
+  z-index: 100;
+  left: 50%;
+  display: flex;
+  bottom: 50px;
+  gap: 20px;
+  width: max-content;
+}
+.caorusel .thumbnail-list .thumbnail-item {
+  width: 180px;
+  height: 250px;
+  position: relative;
+  flex-shrink: 0;
+  /* определяет, насколько элемент может сжиматься (уменьшаться в размере) 
+  по сравнению с другими элементами в контейнере,
+   если свободного пространства недостаточно. */
+}
+.caorusel .thumbnail-list .thumbnail-item img {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  object-fit: cover;
+}
+.caorusel .thumbnail-list .thumbnail-item:nth-of-type(2) {
+  opacity: 0.8;
+}
+.caorusel .thumbnail-list .thumbnail-item:nth-of-type(3) {
+  opacity: 0.6;
+}
+.caorusel .thumbnail-list .thumbnail-item:nth-of-type(4) {
+  opacity: 0.4;
+}

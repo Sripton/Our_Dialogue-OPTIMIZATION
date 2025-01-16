@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import Navbar from "./pages/Navbar";
+import Contentlist from "./pages/Contentlist";
 
 function App() {
   // Функция isMobile  используется для определения того,
@@ -20,7 +21,12 @@ function App() {
     };
   }, []);
 
-  return <Navbar />;
+  return (
+    <>
+      <Navbar />
+      <Contentlist />
+    </>
+  );
 }
 
 export default App;
