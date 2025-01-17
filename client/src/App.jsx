@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./pages/Navbar";
 import Contentlist from "./pages/Contentlist";
 
@@ -21,10 +21,28 @@ function App() {
     };
   }, []);
 
+  const [allDirections, setAllDirections] = useState([]);
+  const [allThumbnails, setAllThumbnails] = useState([]);
+  useEffect(() => {
+    fetch(`http://localhost:3001/directions`, { method: "GET" })
+      .then((res) => res.json())
+      .then((data) => setAllDirections(data))
+      .catch((err) => console.log(err));
+  }, []);
+  useEffect(() => {
+    fetch(`http://localhost:3001/thumbnails`, { method: "GET" })
+      .then((res) => res.json())
+      .then((data) => setAllThumbnails(data))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <>
       <Navbar />
-      <Contentlist />
+      <Contentlist
+        allDirections={allDirections}
+        allThumbnails={allThumbnails}
+      />
     </>
   );
 }
