@@ -15,25 +15,26 @@ export default function Contentlist({ allDirections, allThumbnails }) {
   }, [allDirections, allThumbnails]);
   console.log("caoruselItems", caoruselItems); // не пустой массив
   console.log("thumbnailItems", thumbnailItems); //  не пустой массив
-
-  const handleClickItems = (index) => {
-    setSelectedItemIndex(index + 1);
-
+  let indexs = 0;
+  const handleClickButtonNext = () => {
     const updatedCaoruselItems = [
-      ...caoruselItems.slice(index + 1),
-      caoruselItems[index],
+      ...caoruselItems.slice(indexs + 1),
+      caoruselItems[indexs],
     ];
     setCaoruselItems(updatedCaoruselItems);
-
     const updatedThumbnailItems = [
-      ...thumbnailItems.slice(index + 1),
-      thumbnailItems[index],
+      ...thumbnailItems.slice(indexs + 1),
+      thumbnailItems[indexs],
     ];
     setThumbnailItems(updatedThumbnailItems);
+    indexs += 1;
   };
 
   return (
     <div className={`caorusel ${selectedItemIndex ? "_next" : ""}`}>
+      <button type="button" className="carousel-button-prev">
+        Назад
+      </button>
       <div className="caorusel-list">
         {caoruselItems?.map((direction) => (
           <div className="caorusel-item" key={direction.id}>
@@ -54,13 +55,18 @@ export default function Contentlist({ allDirections, allThumbnails }) {
         ))}
       </div>
 
+      <div className="arrows">
+        <button className="next" type="button" onClick={handleClickButtonNext}>
+          {">"}
+        </button>
+      </div>
+
       <div className="thumbnail-list">
         {thumbnailItems?.map((thumbnail, index) => (
           <div className="thumbnail-item" key={thumbnail.id}>
             <img
               src={`/directions/${thumbnail.img}`}
               alt={`${thumbnail.title}`}
-              onClick={() => handleClickItems(index)}
             />
           </div>
         ))}
