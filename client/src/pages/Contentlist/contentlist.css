@@ -39,11 +39,6 @@
   color: #fff;
   line-height: 1.3em;
 }
-.caorusel .caorusel-item .caorusel-content .caorusel-description {
-  font-size: 1.5rem;
-  letter-spacing: 3px;
-  margin-bottom: 40px;
-}
 .caorusel .caorusel-item .caorusel-content .caorusel-button {
   padding: 10px 25px;
   font-size: 20px;
@@ -67,7 +62,6 @@
   z-index: 1;
 }
 .caorusel .caorusel-item:nth-child(1) .caorusel-title,
-.caorusel .caorusel-item:nth-child(1) .caorusel-description,
 .caorusel .caorusel-item:nth-child(1) .caorusel-button {
   transform: translateY(50px);
   opacity: 0;
@@ -84,11 +78,9 @@
 .caorusel .caorusel-item:nth-child(1) .caorusel-title {
   animation-delay: 0.2s;
 }
-.caorusel .caorusel-item:nth-child(1) .caorusel-description {
-  animation-delay: 0.4s;
-}
+
 .caorusel .caorusel-item:nth-child(1) .caorusel-button {
-  animation-delay: 0.6s;
+  animation-delay: 0.4s;
 }
 @media (max-width: 767px) {
   .caorusel-content {
@@ -98,6 +90,37 @@
     font-size: 30px;
   }
 }
+.arrows {
+  position: absolute;
+  z-index: 10;
+  top: 80%;
+  right: 40%;
+  width: 300px;
+  max-width: 30%;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+button {
+  padding: 10px 25px;
+  font-size: 20px;
+  border-radius: 5px;
+  letter-spacing: 2px;
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  text-shadow: 0 5px 10px #fff;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease 0s;
+}
+button:hover {
+  cursor: pointer;
+  background-color: #fff;
+  color: #000;
+  text-shadow: 0 5px 5px #858282;
+}
+
 .caorusel .thumbnail-list {
   position: absolute;
   z-index: 100;
@@ -160,128 +183,8 @@
   }
 }
 
-.arrows {
-  position: absolute;
-  z-index: 10;
-  top: 80%;
-  right: 52%;
-  width: 300px;
-  max-width: 30%;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-.arrows button {
-  padding: 10px 25px;
-  font-size: 20px;
-  border-radius: 5px;
-  letter-spacing: 2px;
-  background-color: transparent;
-  color: #fff;
-  border: 1px solid #fff;
-  text-shadow: 0 5px 10px #fff;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.3s ease 0s;
-}
-.arrows button:hover {
-  cursor: pointer;
-  background-color: #fff;
-  color: #000;
-  text-shadow: 0 5px 5px #858282;
-}
-
-/* Адаптация для планшетов (максимальная ширина 1024px) */
-@media (max-width: 1024px) {
-  .caorusel .caorusel-content {
-    padding-right: 20px;
-  }
-  .caorusel .caorusel-title {
+@media (max-width: 767px) {
+  .caorusel .caorusel-item .caorusel-content .caorusel-title {
     font-size: 3em;
-  }
-  .caorusel .caorusel-description {
-    font-size: 1.2rem;
-  }
-  .caorusel .thumbnail-list .thumbnail-item {
-    width: 150px;
-    height: 200px;
-  }
-  .arrows {
-    top: 85%;
-    right: 50%;
-    max-width: 50%;
-  }
-  .arrows button {
-    padding: 8px 20px;
-    font-size: 18px;
-  }
-}
-
-/* Адаптация для смартфонов (максимальная ширина 768px) */
-@media (max-width: 768px) {
-  .caorusel .caorusel-title {
-    font-size: 2em;
-    letter-spacing: 5px;
-  }
-  .caorusel .caorusel-description {
-    font-size: 1rem;
-    margin-bottom: 20px;
-  }
-  .caorusel .caorusel-button {
-    font-size: 16px;
-    padding: 8px 15px;
-  }
-  .caorusel .thumbnail-list .thumbnail-item {
-    width: 120px;
-    height: 160px;
-  }
-  .arrows {
-    top: 90%;
-    max-width: 70%;
-    left: 70px;
-  }
-  .arrows button {
-    font-size: 16px;
-    padding: 5px 15px;
-  }
-}
-
-@media (max-width: 500px) {
-  /* Скрыть описание */
-  .caorusel .caorusel-description {
-    display: none;
-  }
-  .caorusel .caorusel-button {
-    top: 20px;
-    position: relative;
-  }
-  /* Отобразить кнопки на месте описания */
-  .arrows {
-    position: absolute; /* Устанавливаем позицию для размещения кнопок */
-    top: 50%; /* Помещаем кнопки примерно в центр описания */
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex; /* Размещаем кнопки в горизонтальном ряду */
-    gap: 10px;
-    z-index: 100;
-  }
-
-  .arrows button {
-    padding: 10px 25px;
-    font-size: 20px;
-    border-radius: 5px;
-    letter-spacing: 2px;
-    background-color: transparent;
-    color: #fff;
-    border: 1px solid #fff;
-    text-shadow: 0 5px 10px #fff;
-    cursor: pointer;
-    text-decoration: none;
-  }
-  .arrows button:hover {
-    cursor: pointer;
-    background-color: #fff;
-    color: #000;
-    text-shadow: 0 5px 5px #858282;
   }
 }

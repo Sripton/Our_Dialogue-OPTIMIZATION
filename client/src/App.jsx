@@ -42,6 +42,8 @@ function App() {
       <Contentlist
         allDirections={allDirections}
         allThumbnails={allThumbnails}
+        setAllDirections={setAllDirections}
+        setAllThumbnails={setAllThumbnails}
       />
     </>
   );
