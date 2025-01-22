@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./pages/Navbar";
 import Contentlist from "./pages/Contentlist";
+import Signin from "./pages/Signin";
+import Signup from "./pages/Signup";
 
 function App() {
   // Функция isMobile  используется для определения того,
@@ -39,12 +42,21 @@ function App() {
   return (
     <>
       <Navbar />
-      <Contentlist
-        allDirections={allDirections}
-        allThumbnails={allThumbnails}
-        setAllDirections={setAllDirections}
-        setAllThumbnails={setAllThumbnails}
-      />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Contentlist
+              allDirections={allDirections}
+              allThumbnails={allThumbnails}
+              setAllDirections={setAllDirections}
+              setAllThumbnails={setAllThumbnails}
+            />
+          }
+        />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signin" element={<Signin />} />
+      </Routes>
     </>
   );
 }

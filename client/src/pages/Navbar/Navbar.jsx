@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import "./navbar.css";
 
 export default function Navbar() {
@@ -43,6 +44,11 @@ export default function Navbar() {
                       <a className="menu-sub-link">2 подпункт 2-го меню</a>
                     </li>
                   </ul>
+                </li>
+                <li>
+                  <NavLink className="menu-link" to="/signin">
+                    Вход
+                  </NavLink>
                 </li>
               </ul>
             </nav>
