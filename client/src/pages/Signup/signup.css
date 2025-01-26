@@ -35,7 +35,7 @@
 }
 @media (max-width: 500px) {
   .form {
-    height: auto;   
+    height: auto;
     padding: 15px;
   }
 }
@@ -88,16 +88,10 @@
   letter-spacing: 2px;
   margin-bottom: 20px;
 }
-.remember-forgot a {
-  text-decoration: none;
-  color: #fff;
-  letter-spacing: 2px;
-}
 .remember-forgot label input {
   margin-right: 5px;
   accent-color: rgb(163, 213, 112);
 }
-
 .form button {
   width: 100%;
   height: 45px;
@@ -111,26 +105,6 @@
   outline: none;
   cursor: pointer;
   margin-bottom: 20px;
-}
-
-.registration-list {
-  margin: 20px 0 10px;
-  text-align: center;
-  color: #fff;
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.9em;
-}
-.registration-list .registration-link {
-  color: #fff;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1em;
-  position: relative;
-  left: 5px;
-}
-.registration-list .registration-link:hover {
-  text-decoration: underline;
 }
 .blob {
   width: 500px;

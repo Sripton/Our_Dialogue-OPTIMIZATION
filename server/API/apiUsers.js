@@ -16,11 +16,19 @@ router.post("/signup", async (req, res) => {
       password: hashPassword,
       name,
     });
+
     // Сохранение данных в сессии:
     // После успешного создания пользователя его данные сохраняются в объекте сессии:
     req.session.userID = createUser.id;
     req.session.userName = createUser.name;
-
+    console.log("Сессия после установки:", req.session);
+    req.session.save((err) => {
+      if (err) {
+        console.log("Ошибка при сохранении сессии:", err);
+      } else {
+        console.log("Сессия успешно сохранена:", req.session);
+      }
+    });
     //  Ответ клиенту: На клиент возвращается JSON-объект с идентификатором и именем пользователя.
     res.json({
       userID: createUser.id,

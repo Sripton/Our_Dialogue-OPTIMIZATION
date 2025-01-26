@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import axios from "axios";
 import Navbar from "./pages/Navbar";
 import Contentlist from "./pages/Contentlist";
 import Signin from "./pages/Signin";
@@ -27,17 +28,40 @@ function App() {
   const [allDirections, setAllDirections] = useState([]);
   const [allThumbnails, setAllThumbnails] = useState([]);
   useEffect(() => {
-    fetch(`http://localhost:3001/directions`, { method: "GET" })
-      .then((res) => res.json())
-      .then((data) => setAllDirections(data))
+    axios
+      .get(`${process.env.REACT_APP_BASEURL}/directions`)
+      .then((res) => setAllDirections(res.data))
       .catch((err) => console.log(err));
   }, []);
   useEffect(() => {
-    fetch(`http://localhost:3001/thumbnails`, { method: "GET" })
-      .then((res) => res.json())
-      .then((data) => setAllThumbnails(data))
+    axios
+      .get(`${process.env.REACT_APP_BASEURL}/thumbnails`)
+      .then((res) => setAllThumbnails(res.data))
       .catch((err) => console.log(err));
   }, []);
+  const [userIDSession, setUserIDSession] = useState({
+    userID: null,
+  });
+  const [userNameSession, setUserNameSession] = useState({
+    userName: null,
+  });
+
+  // useEffect(() => {
+  //   const restoreSession = async () => {
+  //     const response = await fetch("http://localhost:3001/userIDSession", {
+  //       method: "GET",
+  //     });
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setUserIDSession(data.userID);
+  //       setUserNameSession(data.userName);
+  //       console.log("Восстановление сессии:", data); // Лог для проверки
+  //     }
+  //   };
+  //   restoreSession();
+  // }, []);
+  console.log("allDirections", allDirections);
+  console.log("allThumbnails", allThumbnails);
 
   return (
     <>
@@ -54,7 +78,15 @@ function App() {
             />
           }
         />
-        <Route path="/signup" element={<Signup />} />
+        <Route
+          path="/signup"
+          element={
+            <Signup
+              setUserIDSession={setUserIDSession}
+              setUserNameSession={setUserNameSession}
+            />
+          }
+        />
         <Route path="/signin" element={<Signin />} />
       </Routes>
     </>
