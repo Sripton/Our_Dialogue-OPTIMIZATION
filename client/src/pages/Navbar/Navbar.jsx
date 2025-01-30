@@ -51,7 +51,7 @@ export default function Navbar({ userNameSession }) {
                   </NavLink>
                 </li>
                 <li>
-                  <p>{`Привет ${userNameSession}`}</p>
+                  <p>{`Hello ${userNameSession}`}</p>
                 </li>
               </ul>
             </nav>

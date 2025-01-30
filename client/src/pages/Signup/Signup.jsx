@@ -1,19 +1,29 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./signup.css";
 import axios from "axios";
 
 export default function Signup({ setUserIDSession, setUserNameSession }) {
+  // Состояние для хранения введённых пользователем данных
   const [inputs, setInputs] = useState({
     login: "",
     password: "",
     name: "",
   });
 
+  // Хук для навигации после успешной регистрации
+  const navigate = useNavigate();
+
+  // Функция для обработки изменения полей ввода
   const changeHandler = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+  // Функция для обработки отправки формы регистрации
   const submitHandler = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Предотвращаем перезагрузку страницы
+
+    // Отправляем POST-запрос на сервер с данными пользователя
     const response = await axios.post(
       `${process.env.REACT_APP_BASEURL}/api/users/signup`,
       {
@@ -22,14 +32,16 @@ export default function Signup({ setUserIDSession, setUserNameSession }) {
         name: inputs.name,
       },
       {
-        headers: { "Content-Type": "application/json" },
         withCredentials: true, // Включаем cookie для сохранения сессии
       }
     );
+
+    // Если запрос выполнен успешно, обновляем данные сессии
     if (response.status === 200) {
       const { data } = response;
       setUserIDSession(data.userID);
       setUserNameSession(data.userName);
+      navigate("/"); // Перенаправляем пользователя на главную страницу
     }
   };
 

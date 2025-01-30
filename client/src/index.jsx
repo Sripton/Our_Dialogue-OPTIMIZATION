@@ -5,6 +5,7 @@ import App from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
+  // Рендеринг приложения внутри <BrowserRouter>, который обеспечивает поддержку маршрутизации
   <BrowserRouter>
     <App />
   </BrowserRouter>
