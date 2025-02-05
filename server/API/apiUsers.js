@@ -17,7 +17,6 @@ router.post("/signup", async (req, res) => {
       password: hashPassword,
       name,
     });
-
     // Сохранение данных в сессии:
     // После успешного создания пользователя его данные сохраняются в объекте сессии:
     req.session.userID = createUser.id;
@@ -78,4 +77,16 @@ router.get("/checkUser", (req, res) => {
   return res.sendStatus(401);
 });
 
+router.get("/logout", (req, res) => {
+  try {
+    // Удаляем текущую сессию пользователя
+    req.session.destroy();
+    // Очищаем cookie с идентификатором сессии
+    res.clearCookie("user_sid_2");
+    // Отправляем клиенту статус 200 (ОК), указывая, что выход выполнен успешно
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+  }
+});
 module.exports = router;

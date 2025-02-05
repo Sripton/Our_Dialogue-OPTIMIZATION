@@ -8,14 +8,6 @@ export default function Contentlist({
   setAllDirections, // Функция для обновления directions
   setAllThumbnails, // Функция для обновления thumbnails
 }) {
-  // Состояние isNext отвечает за добавление CSS-класса "_next" для анимации карусели
-  const [isNext, setIsNext] = useState(false);
-
-  // Функция для переключения состояния isNext
-  const handleIsNext = () => {
-    setIsNext(!isNext);
-  };
-
   // Функция обработки клика по кнопке "Вперёд"
   const handleClickButtonNext = () => {
     setAllDirections([...allDirections.slice(1), allDirections[0]]);
@@ -34,12 +26,8 @@ export default function Contentlist({
     ]);
   };
 
-  // При монтировании компонента переключаем состояние isNext
-  useEffect(() => {
-    handleIsNext();
-  }, []);
   return (
-    <div className={`caorusel ${isNext ? "_next" : ""}`}>
+    <div className="caorusel _next">
       <button type="button" className="carousel-button-prev">
         Назад
       </button>

@@ -33,5 +33,6 @@ module.exports = {
     "jsx-a11y/no-noninteractive-element-interactions": 0,
     "react/jsx-wrap-multilines": 0,
     "import/no-extraneous-dependencies": 0,
+    "react/jsx-no-constructed-context-values": 0,
   },
 };

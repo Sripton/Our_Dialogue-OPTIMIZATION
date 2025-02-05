@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, data } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./pages/Navbar";
 import Contentlist from "./pages/Contentlist";
@@ -7,6 +7,7 @@ import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 
 function App() {
+  const navigate = useNavigate();
   // Функция isMobile  используется для определения того,
   // осуществляется ли доступ к приложению с мобильного устройства.
   useEffect(() => {
@@ -33,11 +34,14 @@ function App() {
   // Состояния для хранения данных directions и thumbnails
   const [allDirections, setAllDirections] = useState([]);
   const [allThumbnails, setAllThumbnails] = useState([]);
+  // Состояния для хранения информации о пользователе из сессии
+  const [userIDSession, setUserIDSession] = useState(null);
+  const [userNameSession, setUserNameSession] = useState(null);
 
-  // Запрос на сервер для получения списка directions при монтировании компонента
+  // Запрос на сервер для получения списка directions при  монтировании компонента
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BASEURL}/directions`)
+      .get(`/directions`)
       .then((res) => setAllDirections(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -45,23 +49,15 @@ function App() {
   // Запрос на сервер для получения списка thumbnails при монтировании компонента
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BASEURL}/thumbnails`)
+      .get(`/thumbnails`)
       .then((res) => setAllThumbnails(res.data))
       .catch((err) => console.log(err));
   }, []);
 
-  // Состояния для хранения информации о пользователе из сессии
-  const [userIDSession, setUserIDSession] = useState({
-    userID: null,
-  });
-  const [userNameSession, setUserNameSession] = useState({
-    userName: null,
-  });
-
   // Запрос на сервер для проверки, авторизован ли пользователь
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BASEURL}/api/users/checkUser`)
+      .get(`/api/users/checkUser`)
       .then((res) => {
         // Если пользователь найден, сохраняем его данные в состояние
         setUserIDSession(res.data.userID);
@@ -70,9 +66,21 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
+  const logoutHandler = async () => {
+    const response = await axios.get("/api/users/logout").then(() => {
+      setUserIDSession(null);
+      setUserNameSession(null);
+      navigate("/");
+    });
+  };
+
   return (
     <>
-      <Navbar userNameSession={userNameSession} />
+      <Navbar
+        userIDSession={userIDSession}
+        userNameSession={userNameSession}
+        logoutHandler={logoutHandler}
+      />
       <Routes>
         <Route
           path="/"
@@ -94,7 +102,15 @@ function App() {
             />
           }
         />
-        <Route path="/signin" element={<Signin />} />
+        <Route
+          path="/signin"
+          element={
+            <Signin
+              setUserIDSession={setUserIDSession}
+              setUserNameSession={setUserNameSession}
+            />
+          }
+        />
       </Routes>
     </>
   );

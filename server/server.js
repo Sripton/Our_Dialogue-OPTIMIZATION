@@ -56,12 +56,12 @@ app.use(async (req, res, next) => {
   next(); // Передаём управление следующему middleware
 });
 
-// Маршрут для получения всех направлений (directions)
+// Маршрут для получения всех  (directions)
 app.get("/directions", async (req, res) => {
   res.json(res.locals.allDirections); // Отправляем клиенту JSON с данными
 });
 
-// Маршрут для получения всех миниатюр (thumbnails)
+// Маршрут для получения всех  (thumbnails)
 app.get("/thumbnails", async (req, res) => {
   res.json(res.locals.allThumbnail);
 });
@@ -69,5 +69,5 @@ app.get("/thumbnails", async (req, res) => {
 // Подключаем маршруты API пользователей
 app.use("/api/users", apiUsersRouter);
 
-// Запуск сервера на указанном порту
+// Запуск сервера по указанному порту
 app.listen(PORT, () => console.log(`Server has started on ${PORT} port`));
