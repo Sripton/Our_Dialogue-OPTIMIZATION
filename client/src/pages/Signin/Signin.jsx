@@ -1,34 +1,17 @@
-import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useContext } from "react";
+import { NavLink } from "react-router-dom";
 import "./signin.css";
+import { UserContext } from "../Context/UserContextProvider";
 
-export default function Signin({ setUserIDSession, setUserNameSession }) {
+export default function Signin() {
+  const { submitSigninHandler } = useContext(UserContext);
   const [inputs, setInputs] = useState({
     login: "",
     password: "",
   });
 
-  const navigate = useNavigate();
   const inputsHandler = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-  const submitSigninHandler = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(`/api/users/signin`, {
-        login: inputs.login,
-        password: inputs.password,
-      });
-      if (response.status === 200) {
-        const { data } = await response;
-        setUserIDSession(data.userID);
-        setUserNameSession(data.userName);
-        navigate("/");
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (

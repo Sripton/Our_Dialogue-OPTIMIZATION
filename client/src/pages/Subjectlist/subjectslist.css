@@ -1,0 +1,196 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: #2e2e41;
+}
+section {
+  position: relative;
+  top: 100px;
+  margin: 0 80px;
+  transition: 0.5s;
+}
+.main-container {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.tab-nav-bar {
+  position: relative;
+  margin: 65px 10px 40px 10px;
+}
+.tab-navigation {
+  max-width: fit-content;
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+}
+
+.tab-nav-list {
+  list-style-type: none;
+  background-color: #434354;
+  border-radius: 50px;
+  white-space: nowrap; /* предотвращает перенос строк внутри элемента. */
+  border-bottom: 1px solid #434354;
+  box-shadow: 0 8px 32px rgba(45, 119, 124, 0.37);
+  overflow-x: auto; /* свойство, которое включает горизонтальную прокрутку (scroll), только если содержимое выходит за границы блока. */
+  user-select: none; /* CSS-свойство, которое запрещает пользователю выделять текст или элементы на странице. */
+  scroll-behavior: smooth;
+  /* scrollbar-width: none;  убирает scrollbar  */
+  -ms-overflow-style: none; /* для Internet Explorer и Edge */
+  padding: 10px;
+}
+/* Скрытие scrollbar для Chrome, Safari и Edge */
+.tab-nav-list::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-nav-item {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 30px;
+  display: inline-block;
+  transition: 0.4s ease;
+  text-transform: uppercase;
+}
+
+.tab-nav-item:hover {
+  background-color: #2e2e41;
+}
+.tab-nav-item-active {
+  background-color: #5b85ff;
+}
+
+.left-btn,
+.right-btn {
+  padding: 20px;
+  cursor: pointer;
+  font-size: 3em;
+  color: #fff;
+  position: absolute;
+}
+
+.left-btn {
+  left: 0;
+  background: linear-gradient(to left, transparent, #2e2e41);
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+.right-btn {
+  right: 0;
+  background: linear-gradient(to right, transparent, #2e2e41);
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+.hidden {
+  display: none;
+}
+.tab-content {
+  position: relative;
+  width: 100%;
+  display: flex;
+}
+
+.tab {
+  position: absolute;
+  top: 0;
+  right: auto;
+  bottom: 0;
+  left: auto;
+  max-width: 1200px;
+  padding: 15px 50px;
+  content-visibility: hidden;
+  opacity: 0;
+  transform: translateX(25px);
+}
+.tab._active-tab {
+  opacity: 1;
+  content-visibility: visible;
+  transform: translateX(0);
+  transition: 1s ease;
+}
+
+.tab .row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 50px 0;
+  gap: 30px;
+}
+
+.tab .img-card {
+position: relative;
+width: auto;
+max-width: 800px;
+display: flex;
+justify-content: center;
+align-items: center;
+border-radius: 20px;
+overflow: hidden;
+}
+
+.tab .img-card img  {
+  border-radius: 20px;
+  width: 100%;
+  height: auto;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+.right-column {
+  max-width: 800px;
+}
+.info {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  left: 30px;
+}
+.info-icon {
+  width: 35px;
+  height: 35px;
+  color: #fff;
+  margin-bottom: 30px;
+  cursor: pointer;
+}
+
+@media (max-width: 1050px){
+  .main-container {
+    margin: 0px 0px;
+  }
+  .tab-nav-bar {
+    margin: 65px 25px 40px 20px;
+  }
+
+  .tab {
+    padding: 10px 25px;
+  }
+  .row {
+    flex-direction: column;
+  }
+   .row .info {
+    flex-direction: row;
+    left: 0;
+    text-align: center;
+   }
+   .info-icon {
+    margin-right: 30px;
+   }
+
+   .tab .img-card {
+    width: auto;
+    max-width: 600px;
+   }
+}

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./pages/Navbar";
 import Contentlist from "./pages/Contentlist";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
+import Subjectlist from "./pages/Subjectlist";
 
 function App() {
-  const navigate = useNavigate();
   // Функция isMobile  используется для определения того,
   // осуществляется ли доступ к приложению с мобильного устройства.
   useEffect(() => {
@@ -34,9 +34,6 @@ function App() {
   // Состояния для хранения данных directions и thumbnails
   const [allDirections, setAllDirections] = useState([]);
   const [allThumbnails, setAllThumbnails] = useState([]);
-  // Состояния для хранения информации о пользователе из сессии
-  const [userIDSession, setUserIDSession] = useState(null);
-  const [userNameSession, setUserNameSession] = useState(null);
 
   // Запрос на сервер для получения списка directions при  монтировании компонента
   useEffect(() => {
@@ -54,33 +51,9 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
-  // Запрос на сервер для проверки, авторизован ли пользователь
-  useEffect(() => {
-    axios
-      .get(`/api/users/checkUser`)
-      .then((res) => {
-        // Если пользователь найден, сохраняем его данные в состояние
-        setUserIDSession(res.data.userID);
-        setUserNameSession(res.data.userName);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  const logoutHandler = async () => {
-    const response = await axios.get("/api/users/logout").then(() => {
-      setUserIDSession(null);
-      setUserNameSession(null);
-      navigate("/");
-    });
-  };
-
   return (
     <>
-      <Navbar
-        userIDSession={userIDSession}
-        userNameSession={userNameSession}
-        logoutHandler={logoutHandler}
-      />
+      <Navbar />
       <Routes>
         <Route
           path="/"
@@ -93,24 +66,9 @@ function App() {
             />
           }
         />
-        <Route
-          path="/signup"
-          element={
-            <Signup
-              setUserIDSession={setUserIDSession}
-              setUserNameSession={setUserNameSession}
-            />
-          }
-        />
-        <Route
-          path="/signin"
-          element={
-            <Signin
-              setUserIDSession={setUserIDSession}
-              setUserNameSession={setUserNameSession}
-            />
-          }
-        />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signin" element={<Signin />} />
+        <Route path="/subjects/:id" element={<Subjectlist />} />
       </Routes>
     </>
   );

@@ -34,5 +34,6 @@ module.exports = {
     "react/jsx-wrap-multilines": 0,
     "import/no-extraneous-dependencies": 0,
     "react/jsx-no-constructed-context-values": 0,
+    "operator-linebreak": 0,
   },
 };

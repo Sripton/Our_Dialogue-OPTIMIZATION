@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useContext } from "react";
 import "./signup.css";
-import axios from "axios";
+import { UserContext } from "../Context/UserContextProvider";
 
-export default function Signup({ setUserIDSession, setUserNameSession }) {
-  // const { submitSignupHandler } = useContext(UserContext);
+export default function Signup() {
+  const { submitSignupHandler } = useContext(UserContext);
   // Состояние для хранения введённых пользователем данных
   const [inputs, setInputs] = useState({
     login: "",
@@ -12,31 +11,9 @@ export default function Signup({ setUserIDSession, setUserNameSession }) {
     name: "",
   });
 
-  const navigate = useNavigate();
   // Функция для обработки изменения полей ввода
   const changeSignupHandler = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-  const submitSignupHandler = async (e) => {
-    e.preventDefault(); // Предотвращаем перезагрузку страницы
-    try {
-      // Отправляем POST-запрос на сервер с данными пользователя
-      const response = await axios.post(`/api/users/signup`, {
-        login: inputs.login,
-        password: inputs.password,
-        name: inputs.name,
-      });
-      if (response.status === 200) {
-        // Если запрос выполнен успешно, обновляем данные сессии
-        const { data } = await response;
-        setUserIDSession(data.userID);
-        setUserNameSession(data.userName);
-        // Перенаправляем пользователя на главную страницу
-        navigate("/");
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (

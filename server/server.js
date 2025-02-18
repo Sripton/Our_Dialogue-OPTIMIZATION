@@ -4,7 +4,8 @@ const dotenv = require("dotenv"); // Подключаем dotenv для рабо
 const { Direction, Thumbnail } = require("./db/models"); // Импортируем модели из базы данных
 const session = require("express-session"); // Подключаем express-session для управления сессиями
 const FileStore = require("session-file-store")(session); // Используем FileStore для хранения сессий в файлах
-const apiUsersRouter = require("./API/apiUsers"); // Импортируем маршруты API для пользователей
+const apiUsersRouter = require("./API/apiUsersRouter"); // Импортируем маршруты API для пользователей
+const apiSubjectsRouter = require("./API/apiSubjectsRouter");
 const cors = require("cors"); // Подключаем CORS для работы с запросами с других доменов
 
 dotenv.config(); // Загружаем переменные окружения из файла .env
@@ -68,6 +69,7 @@ app.get("/thumbnails", async (req, res) => {
 
 // Подключаем маршруты API пользователей
 app.use("/api/users", apiUsersRouter);
+app.use("/api/subjects", apiSubjectsRouter);
 
 // Запуск сервера по указанному порту
 app.listen(PORT, () => console.log(`Server has started on ${PORT} port`));

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { NavLink } from "react-router-dom";
 import "./contentlist.css";
 
 // Компонент Contentlist отображает карусель directions и thumbnails
@@ -42,9 +43,12 @@ export default function Contentlist({
             />
             <div className="caorusel-content">
               <div className="caorusel-title">{direction.title}</div>
-              <button type="submit" className="caorusel-button">
+              <NavLink
+                to={`/subjects/${direction.id}`}
+                className="caorusel-button"
+              >
                 Перейти
-              </button>
+              </NavLink>
             </div>
           </div>
         ))}
