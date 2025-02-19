@@ -6,6 +6,7 @@ import Contentlist from "./pages/Contentlist";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Subjectlist from "./pages/Subjectlist";
+import SubjectsContextProvider from "./pages/Context/SubjectsContextProvider";
 
 function App() {
   // Функция isMobile  используется для определения того,
@@ -68,7 +69,14 @@ function App() {
         />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
-        <Route path="/subjects/:id" element={<Subjectlist />} />
+        <Route
+          path="/subjects/:id"
+          element={
+            <SubjectsContextProvider>
+              <Subjectlist />
+            </SubjectsContextProvider>
+          }
+        />
       </Routes>
     </>
   );
