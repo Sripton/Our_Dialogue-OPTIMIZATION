@@ -74,7 +74,7 @@ export default function Subjectlist() {
                     <ion-icon class="info-icon" name="arrow-redo-outline" />
                   </NavLink>
 
-                  <NavLink to="">
+                  <NavLink to={`/addposts/${subject.id}`}>
                     {" "}
                     <ion-icon
                       class="info-icon"

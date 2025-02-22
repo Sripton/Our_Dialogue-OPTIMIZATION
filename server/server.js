@@ -6,6 +6,7 @@ const session = require("express-session"); // Подключаем express-sess
 const FileStore = require("session-file-store")(session); // Используем FileStore для хранения сессий в файлах
 const apiUsersRouter = require("./API/apiUsersRouter"); // Импортируем маршруты API для пользователей
 const apiSubjectsRouter = require("./API/apiSubjectsRouter");
+const apiPostsRouterjs = require("./API/apiPostsRouter");
 const cors = require("cors"); // Подключаем CORS для работы с запросами с других доменов
 
 dotenv.config(); // Загружаем переменные окружения из файла .env
@@ -67,9 +68,10 @@ app.get("/thumbnails", async (req, res) => {
   res.json(res.locals.allThumbnail);
 });
 
-// Подключаем маршруты API пользователей
+// Подключаем маршруты API
 app.use("/api/users", apiUsersRouter);
 app.use("/api/subjects", apiSubjectsRouter);
+app.use("/api/posts", apiPostsRouterjs);
 
 // Запуск сервера по указанному порту
 app.listen(PORT, () => console.log(`Server has started on ${PORT} port`));

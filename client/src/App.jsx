@@ -7,6 +7,7 @@ import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Subjectlist from "./pages/Subjectlist";
 import SubjectsContextProvider from "./pages/Context/SubjectsContextProvider";
+import Addposts from "./pages/Addposts";
 
 function App() {
   // Функция isMobile  используется для определения того,
@@ -77,6 +78,7 @@ function App() {
             </SubjectsContextProvider>
           }
         />
+        <Route path="/addposts/:id" element={<Addposts />} />
       </Routes>
     </>
   );

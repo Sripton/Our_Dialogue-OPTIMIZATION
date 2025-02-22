@@ -1,0 +1,133 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.post-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f06, #ff9); /* Плавный градиент */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.post-content {
+  max-width: 600px;
+  background-color: rgba(255, 255, 255, 0.95); /* Легкая прозрачность */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Более глубокая тень */
+  border-radius: 15px;
+  padding: 40px;
+  width: 100%;
+  text-align: center;
+  transition: box-shadow 0.3s ease;
+}
+.post-content:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.post-title {
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  color: #333;
+  letter-spacing: 1px;
+  margin-bottom: 25px;
+}
+.post-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.form-post {
+  width: 100%;
+}
+.form-post textarea {
+  width: 100%;
+  height: 150px;
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Добавлена тень */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.form-post textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.2); /* Подсвечивается при фокусе */
+  outline: none;
+}
+#submit-post {
+  background-color: #ff4081; /* Яркий градиентный цвет */
+  padding: 12px 24px;
+  border-radius: 15px;
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(255, 64, 129, 0.3); /* Яркая тень */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.2s ease;
+}
+#submit-post:hover {
+  background-color: #e91e63;
+  box-shadow: 0 6px 12px rgba(233, 30, 99, 0.4);
+  transform: translateY(-2px); /* Легкий эффект приподнимания */
+}
+#submit-post:active {
+  transform: translateY(1px); /* Эффект нажатия */
+}
+.post-info {
+  margin-top: 30px;
+  color: #333;
+}
+.view-comments {
+  display: block;
+  text-decoration: none;
+  font-size: 1.2rem;
+  color: rgb(9, 84, 133);
+  margin-top: 15px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.view-comments:hover {
+  color: #0056b3;
+  transform: scale(1.2); /* Легкое увеличение при наведении */
+}
+
+@media (max-width: 768px) {
+  .post-container {
+    padding: 30px;
+  }
+  .post-title {
+    font-size: 2rem;
+  }
+
+  .form-postv textarea {
+    font-size: 1rem;
+    width: 100%;
+  }
+
+  #submit-post {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .post-container {
+    padding: 20px;
+  }
+  .post-title {
+    font-size: 1.8rem;
+  }
+  .form-postv textarea {
+    font-size: 0.9rem;
+  }
+  #submit-post {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+}
