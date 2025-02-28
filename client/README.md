@@ -68,3 +68,12 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+### Тестирование
+###  Использование useContext нужно учитывать гломабльное состояние 
+### Проблема 
+[`isDotsActive в PostContext является глобальным состоянием, доступным для всех Postscard компонентов. Когда  вызывается handleDotsActive, оно обновляет это глобальное состояние, а не состояние конкретного поста. В результате все Postscard получают обновлённое значение isDotsActive и меняют своё состояние одновременно.`]
+### Как исправить?
+[`Чтобы isDotsActive применялось только к конкретному посту, использовать локальное состояние внутри каждого компонента Postscard вместо глобального контекста.`]
+

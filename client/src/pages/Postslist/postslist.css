@@ -1,0 +1,16 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.posts-container {
+  background-color: #6e83ca;
+  height: 100vh;
+  padding: 20px;
+  color: #333;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-y: auto;
+}

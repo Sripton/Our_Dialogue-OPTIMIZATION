@@ -35,5 +35,11 @@ module.exports = {
     "import/no-extraneous-dependencies": 0,
     "react/jsx-no-constructed-context-values": 0,
     "operator-linebreak": 0,
+    "object-curly-newline": 0,
+    camelcase: 0,
+    "implicit-arrow-linebreak": 0,
+    "no-confusing-arrow": 0,
+    indent: 0,
+    "function-paren-newline": 0,
   },
 };

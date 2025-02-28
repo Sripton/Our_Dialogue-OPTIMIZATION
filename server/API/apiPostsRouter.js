@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Subject, Post } = require("../db/models");
+const { Subject, Post, User } = require("../db/models");
 
 router.post("/:id", async (req, res) => {
   // Извлекаем параметр id из URL запроса
@@ -26,5 +26,24 @@ router.post("/:id", async (req, res) => {
     console.log(error);
   }
 });
+
+// Извлекаем параметр id из объекта запроса
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    // Выполняем поиск всех записей в модели Post, где subject_id равен полученному id
+    const findAllPost = await Post.findAll({
+      where: { subject_id: id },
+      include: [{ model: User }, { model: Subject }],
+    });
+    // Отправляем найденные записи в формате JSON в ответе
+    res.json(findAllPost);
+  } catch (error) {
+    // В случае ошибки выводим ее в консоль для отладки
+    console.log(error);
+  }
+});
+
+
 
 module.exports = router;

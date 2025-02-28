@@ -8,6 +8,8 @@ import Signup from "./pages/Signup";
 import Subjectlist from "./pages/Subjectlist";
 import SubjectsContextProvider from "./pages/Context/SubjectsContextProvider";
 import Addposts from "./pages/Addposts";
+import Postslist from "./pages/Postslist";
+import PostContextProvider from "./pages/Context/PostContextProvider";
 
 function App() {
   // Функция isMobile  используется для определения того,
@@ -78,7 +80,22 @@ function App() {
             </SubjectsContextProvider>
           }
         />
-        <Route path="/addposts/:id" element={<Addposts />} />
+        <Route
+          path="/addposts/:id"
+          element={
+            <PostContextProvider>
+              <Addposts />
+            </PostContextProvider>
+          }
+        />
+        <Route
+          path="/posts/:id"
+          element={
+            <PostContextProvider>
+              <Postslist />
+            </PostContextProvider>
+          }
+        />
       </Routes>
     </>
   );

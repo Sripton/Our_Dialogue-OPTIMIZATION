@@ -1,0 +1,121 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.post-section {
+  max-width: 700px;
+  background-color: #fff;
+  position: relative;
+  top: 135px;
+  margin: 20px auto;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.toggle-posts-btn {
+  padding: 4px 4px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #333;
+  cursor: pointer;
+  margin-bottom: 5px;
+  transition: background-color 0.3s ease;
+}
+.toggle-posts-btn:hover {
+  background-color: #e0e0e0;
+}
+.post {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fafafa;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+.post-text {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+.post-action {
+  display: flex;
+  gap: 15px;
+}
+
+.post-action button {
+  padding: 3px 8px;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: #333;
+  transition: background-color 0.3s ease box-shadow 0.3s ease;
+}
+.post-action button:hover {
+  background-color: #e0e0e0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.post-note {
+  font-size: 0.8rem;
+  color: #777;
+  font-weight: bold;
+}
+.dots {
+  display: none;
+}
+.close-btn {
+  color: red;
+  cursor: pointer;
+  margin-top: 10px;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .post-section {
+    padding: 15px;
+  }
+  .post {
+    padding: 10px;
+  }
+  .post .post-text {
+    font-size: 1.2rem;
+  }
+  .post-action button {
+    padding: 4px 8px;
+  }
+}
+
+@media (max-width: 595px) {
+  .post-section {
+    padding: 10px;
+  }
+  .post-action {
+    display: none;
+    gap: 10px;
+  }
+  .post-action button {
+    padding: 3px 7px;
+  }
+  .dots {
+    display: inline-block;
+  }
+  .showActions .dots {
+    display: none;
+  }
+  .showActions .post-action {
+    display: flex;
+  }
+  .showActions  .close-btn {
+    display: inline-block;
+  }
+}

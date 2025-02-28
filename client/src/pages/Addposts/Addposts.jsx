@@ -1,43 +1,11 @@
-import React, { useState } from "react"; // Импортируем React и хук useState для работы с состоянием компонента
+import React, { useContext } from "react";
 import "./addposts.css";
-import { NavLink, useParams } from "react-router-dom"; // Импортируем NavLink для навигации и useParams для получения параметров URL
-import axios from "axios"; // Импортируем axios для выполнения HTTP-запросов
-
+import { NavLink } from "react-router-dom"; // Импортируем NavLink для навигации
+import { PostContext } from "../Context/PostContextProvider";
 // Функциональный компонент для добавления постов
 export default function Addposts() {
-  // Состояние для хранения значений полей формы
-  const [inputs, setInputs] = useState({
-    posttitle: "",
-  });
-  // Состояние для хранения списка постов, полученных от сервера
-  const [posts, setPosts] = useState([]);
-
-  // Получаем параметр id из URL
-  const { id } = useParams();
-
-  // Функция для обработки изменений в полях ввода формы
-  // При изменении значения в текстовом поле обновляем соответствующее свойство в состоянии inputs
-  const inputsPostHandler = (e) => {
-    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  // Функция для обработки отправки формы
-  // Отправляет POST-запрос на сервер для создания нового поста
-  const submitPostsHandler = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(`/api/posts/${id}`, {
-        posttitle: inputs.posttitle,
-      });
-      if (response.status === 200) {
-        const { data } = await response;
-        // Обновляем состояние posts данными, полученными от сервера
-        setPosts(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { inputsPosts, inputsPostHandler, submitPostsHandler, id } =
+    useContext(PostContext);
   return (
     <div className="post-container">
       <div className="post-content">
@@ -50,7 +18,7 @@ export default function Addposts() {
             Значение синхронизировано с состоянием inputs */}
             <textarea
               name="posttitle"
-              value={inputs.posttitle || ""}
+              value={inputsPosts.posttitle || ""}
               onChange={inputsPostHandler}
             />
             {/* Кнопка отправки формы */}
@@ -67,7 +35,7 @@ export default function Addposts() {
           </p>
           {/* Использовать <a /> вместо <NavLink/>. При
             использовании <a/> производительность лучше */}
-          <NavLink to="" className="view-comments">
+          <NavLink to={`/posts/${id}`} className="view-comments">
             Перейти к обсуждению
           </NavLink>
         </div>
