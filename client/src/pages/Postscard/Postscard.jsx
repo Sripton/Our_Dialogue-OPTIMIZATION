@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./postscard.css";
-import axios from "axios";
-import { UserContext } from "../Context/UserContextProvider";
+import { PostContext } from "../Context/PostContextProvider";
 
 export default function Postscard({ post }) {
   // ------> Логика для кнопки с тремя точками <-------
@@ -13,103 +12,21 @@ export default function Postscard({ post }) {
   };
   // ------> Логика для кнопки с тремя точками <-------
 
-  // ------> Логика для добавления а также получения лайков и дизлайков <-------
-  // Состояния для хранения лайков  поста
-  const [likePost, setlikePost] = useState([]);
-  // Состояния для хранения  дизлайков поста
-  const [dislikePost, setDislikePost] = useState([]);
-  // Получаем ID текущего пользователя из контекста
-  const { userIDSession } = useContext(UserContext);
-
-  // Функция создания реакции (лайк/дизлайк)
-  const submitPostReaction = async (post_id, reaction_type) => {
-    // Проверяем, поставил ли пользователь лайк
-    const isLikePost = likePost.some((like) => like.user_id === userIDSession);
-    // Проверяем, поставил ли пользователь  дизлайк
-    const isDislikePost = dislikePost.some(
-      (dislike) => dislike.user_id === userIDSession
-    );
-
-    try {
-      if (reaction_type === "like" && isLikePost) {
-        // Если пользователь уже поставил лайк, удаляем его
-        const response = await axios.delete(
-          `/api/postreactions/destroypostreaction/${post_id}`,
-          {
-            user_id: userIDSession,
-          }
-        );
-        if (response.status === 200) {
-          // Удаляем лайк из состояния
-          setlikePost((prevLike) =>
-            Array.isArray(prevLike)
-              ? prevLike.filter((like) => like.user_id !== userIDSession)
-              : []
-          );
-        }
-      } else if (reaction_type === "dislike" && isDislikePost) {
-        // Если пользователь уже поставил дизлайк, удаляем его
-        const response = await axios.delete(
-          `/api/postreactions/destroypostreaction/${post_id}`,
-          {
-            user_id: userIDSession,
-          }
-        );
-        if (response.status === 200) {
-          // Удаляем дизлайк из состояния
-          setDislikePost((prevDislike) =>
-            Array.isArray(prevDislike)
-              ? prevDislike.filter(
-                  (dislike) => dislike.user_id !== userIDSession
-                )
-              : []
-          );
-        }
-      } else {
-        // Если реакции нет, добавляем новую
-        const response = await axios.post(`/api/postreactions/${post_id}`, {
-          user_id: userIDSession,
-          post_id,
-          reaction_type,
-        });
-        if (response.status === 200) {
-          const { data } = response;
-          if (reaction_type === "like") {
-            // Добавляем лайк, убираем дизлайк
-            setlikePost((prevPost) => [...prevPost, data]);
-            setDislikePost((prevDislike) =>
-              prevDislike.filter((dislike) => dislike.user_id !== userIDSession)
-            );
-          } else if (reaction_type === "dislike") {
-            // Добавляем дизлайк, убираем лайк
-            setDislikePost((prevDislike) => [...prevDislike, data]);
-            setlikePost((prevLike) =>
-              prevLike.filter((like) => like.user_id !== userIDSession)
-            );
-          }
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // Получаем лайки поста при загрузке компонента
+  // -----> Получение функции submitPostReaction для создания постов и функции  fetchReactionsPosts для получения постов с помошью useContext <-----
+  const { likePost, dislikePost, submitPostReaction, fetchReactionsPosts } =
+    useContext(PostContext);
   useEffect(() => {
-    axios
-      .get(`/api/postreactions/getlikepost/${post.id}`)
-      .then((response) => setlikePost(response.data))
-      .catch((err) => console.log(err));
-  }, []);
-  // Получаем дизлайки поста при загрузке компонента
-  useEffect(() => {
-    axios
-      .get(`/api/postreactions/getdislikepost/${post.id}`)
-      .then((response) => setDislikePost(response.data))
-      .catch((err) => console.log(err));
+    fetchReactionsPosts();
   }, []);
 
-  // ------> Логика для добавления а также получения лайков и дизлайков <-------
+  // Фильтруем лайки и дизлайки только для текущего поста
+  const postLikes = likePost.filter((like) => like.post_id === post.id);
+  const postDislikes = dislikePost.filter(
+    (dislike) => dislike.post_id === post.id
+  );
+  console.log("postLikes", postLikes);
+  console.log("postDislikes", postDislikes);
+  // -----> Получение функции submitPostReaction для создания постов и функции  fetchReactionsPosts для получения постов с помошью useContext <-----
 
   return (
     <div className={`post-section ${isDotsActive ? "showActions" : ""}`}>
@@ -126,7 +43,7 @@ export default function Postscard({ post }) {
               onClick={() => submitPostReaction(post.id, "like")}
             >
               <ion-icon class="thumbs" name="thumbs-up-outline" />
-              {likePost ? likePost.length : 0}
+              {postLikes ? postLikes.length : 0}
             </button>
             <button
               type="button"
@@ -134,7 +51,7 @@ export default function Postscard({ post }) {
               onClick={() => submitPostReaction(post.id, "dislike")}
             >
               <ion-icon class="thumbs" name="thumbs-down-outline" />
-              {dislikePost ? dislikePost.length : 0}
+              {postDislikes ? postDislikes.length : 0}
             </button>
             <button type="button" className="reply-btn">
               Reply

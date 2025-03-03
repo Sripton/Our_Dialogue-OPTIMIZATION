@@ -34,40 +34,61 @@ router.post("/:id", async (req, res) => {
   }
 });
 
-// Получение всех лайков для конкретного поста
-router.get("/getlikepost/:id", async (req, res) => {
-  const { id } = req.params;
+router.get("/getlikepost", async (req, res) => {
   try {
-    // Находим пост по ID
-    const findPostID = await Post.findByPk(id);
-    // Находим все реакции типа "like" для данного поста
     const findAllPostReactionLike = await Postreaction.findAll({
-      where: { post_id: findPostID.id, reaction_type: "like" },
+      where: { reaction_type: "like" },
     });
     res.json(findAllPostReactionLike);
   } catch (error) {
-    console.log(error); // Логируем ошибку
+    console.log(error);
   }
 });
-
-// Получение всех дизлайков для конкретного поста
-router.get("/getdislikepost/:id", async (req, res) => {
-  const { id } = req.params;
+router.get("/getdislikepost", async (req, res) => {
   try {
-    // Находим пост по ID
-    const findPostID = await Post.findByPk(id);
-    // Находим все реакции типа "dislike" для данного поста
     const findAllPostReactionDislike = await Postreaction.findAll({
-      where: {
-        post_id: findPostID.id,
-        reaction_type: "dislike",
-      },
+      where: { reaction_type: "dislike" },
     });
     res.json(findAllPostReactionDislike);
   } catch (error) {
-    console.log(error); // Логируем ошибку
+    console.log(error);
   }
 });
+
+// Получение всех лайков для конкретного поста
+// router.get("/getlikepost/:id", async (req, res) => {
+//   const { id } = req.params;
+//   try {
+//     // Находим пост по ID
+//     const findPostID = await Post.findByPk(id);
+//     // Находим все реакции типа "like" для данного поста
+//     const findAllPostReactionLike = await Postreaction.findAll({
+//       where: { post_id: findPostID.id, reaction_type: "like" },
+//     });
+//     res.json(findAllPostReactionLike);
+//   } catch (error) {
+//     console.log(error); // Логируем ошибку
+//   }
+// });
+
+// // Получение всех дизлайков для конкретного поста
+// router.get("/getdislikepost/:id", async (req, res) => {
+//   const { id } = req.params;
+//   try {
+//     // Находим пост по ID
+//     const findPostID = await Post.findByPk(id);
+//     // Находим все реакции типа "dislike" для данного поста
+//     const findAllPostReactionDislike = await Postreaction.findAll({
+//       where: {
+//         post_id: findPostID.id,
+//         reaction_type: "dislike",
+//       },
+//     });
+//     res.json(findAllPostReactionDislike);
+//   } catch (error) {
+//     console.log(error); // Логируем ошибку
+//   }
+// });
 
 // Удаление всех реакций на конкретный пост
 router.delete("/destroypostreaction/:id", async (req, res) => {
