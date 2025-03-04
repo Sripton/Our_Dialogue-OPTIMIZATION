@@ -13,19 +13,16 @@ export default function Postscard({ post }) {
   // ------> Логика для кнопки с тремя точками <-------
 
   // -----> Получение функции submitPostReaction для создания постов и функции  fetchReactionsPosts для получения постов с помошью useContext <-----
-  const { likePost, dislikePost, submitPostReaction, fetchReactionsPosts } =
+  const { likePost, dislikePost, fetchReactionsPosts, submitPostReaction } =
     useContext(PostContext);
-  useEffect(() => {
-    fetchReactionsPosts();
-  }, []);
-
   // Фильтруем лайки и дизлайки только для текущего поста
   const postLikes = likePost.filter((like) => like.post_id === post.id);
   const postDislikes = dislikePost.filter(
     (dislike) => dislike.post_id === post.id
   );
-  console.log("postLikes", postLikes);
-  console.log("postDislikes", postDislikes);
+  useEffect(() => {
+    fetchReactionsPosts();
+  }, []);
   // -----> Получение функции submitPostReaction для создания постов и функции  fetchReactionsPosts для получения постов с помошью useContext <-----
 
   return (

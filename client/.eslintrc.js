@@ -42,5 +42,6 @@ module.exports = {
     indent: 0,
     "function-paren-newline": 0,
     "max-len": 0,
+    "no-shadow": 0,
   },
 };
