@@ -3,6 +3,7 @@ import "./postscard.css";
 import { PostContext } from "../Context/PostContextProvider";
 
 export default function Postscard({ post }) {
+  //--------------------------------------------------------
   // ------> Логика для кнопки с тремя точками <-------
   // Состояние для управления отображением кнопки с тремя точками
   const [isDotsActive, setIsDotsActive] = useState(false);
@@ -11,20 +12,49 @@ export default function Postscard({ post }) {
     setIsDotsActive(!isDotsActive);
   };
   // ------> Логика для кнопки с тремя точками <-------
+  //--------------------------------------------------------
 
-  // -----> Получение функции submitPostReaction для создания постов и функции  fetchReactionsPosts для получения постов с помошью useContext <-----
-  const { likePost, dislikePost, fetchReactionsPosts, submitPostReaction } =
-    useContext(PostContext);
-  // Фильтруем лайки и дизлайки только для текущего поста
+  //---------------------------------------------------------------------------------------------------
+  // Забираем данные из PostContext
+  const {
+    likePost,
+    dislikePost,
+    fetchReactionsPosts,
+    submitPostReaction,
+    userIDSession,
+    editPostText,
+    setEditPostText,
+    submitEditPosts,
+    deletePostHandler,
+  } = useContext(PostContext);
+  // Забираем данные из PostContext
+  //---------------------------------------------------------------------------------------------------
+
+  //---------------------------------------------------------------------------------------------------
+  // ----------> Логика для реакций на посты <---------
+  // Фильтруем массив лайков, оставляя только те, которые относятся к текущему посту
   const postLikes = likePost.filter((like) => like.post_id === post.id);
+  // Фильтруем массив дизлайков, оставляя только те, которые относятся к текущему посту
   const postDislikes = dislikePost.filter(
     (dislike) => dislike.post_id === post.id
   );
+  // Вызываем функцию загрузки реакций при монтировании компонента
   useEffect(() => {
     fetchReactionsPosts();
-  }, []);
-  // -----> Получение функции submitPostReaction для создания постов и функции  fetchReactionsPosts для получения постов с помошью useContext <-----
+  }, []); // Пустой массив зависимостей означает, что эффект сработает только один раз при загрузке компонента
+  // ----------> Логика для реакций на посты <---------
+  //---------------------------------------------------------------------------------------------------
 
+  //---------------------------------------------------------------------------------------------------
+  const [isPostEditActive, setIsPostEditActive] = useState(false);
+  const handleEditPostsClick = () => {
+    setIsPostEditActive(!isPostEditActive);
+    setEditPostText(post.posttitle);
+  };
+
+  const handleEditPostsText = (e) => {
+    setEditPostText(e.target.value);
+  };
   return (
     <div className={`post-section ${isDotsActive ? "showActions" : ""}`}>
       <button type="button" className="toggle-posts-btn">
@@ -32,7 +62,24 @@ export default function Postscard({ post }) {
       </button>
       <div className="post-list">
         <div className="post">
-          <p className="post-text">{post.posttitle}</p>
+          {isPostEditActive ? (
+            <form
+              className="form-post"
+              onSubmit={(e) => submitEditPosts(e, post.id, setIsPostEditActive)}
+            >
+              <textarea
+                name="posttitle"
+                value={editPostText}
+                onChange={handleEditPostsText}
+              />
+              <button id="submit-post" type="submit">
+                Опубликовать
+              </button>
+            </form>
+          ) : (
+            <p className="post-text">{post.posttitle}</p>
+          )}
+
           <div className="post-action">
             <button
               type="button"
@@ -53,12 +100,26 @@ export default function Postscard({ post }) {
             <button type="button" className="reply-btn">
               Reply
             </button>
-            <button type="button" className="edit-btn">
-              Edit
-            </button>
-            <button type="button" className="delete-btn">
-              Delete
-            </button>
+            {userIDSession !== post.user_id ? (
+              ""
+            ) : (
+              <>
+                <button
+                  type="button"
+                  className="edit-btn"
+                  onClick={handleEditPostsClick}
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  className="delete-btn"
+                  onClick={() => deletePostHandler(post.id)}
+                >
+                  Delete
+                </button>
+              </>
+            )}
             <small className="post-note">{`${post?.User?.name} к теме (${post?.Subject?.subjectName})`}</small>
           </div>
           <div className="dots" onClick={handleDotsActive}>

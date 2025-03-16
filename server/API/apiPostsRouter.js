@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Subject, Post, User } = require("../db/models");
+const { Subject, Post, User, Postreaction } = require("../db/models");
 
 router.post("/:id", async (req, res) => {
   // Извлекаем параметр id из URL запроса
@@ -44,6 +44,29 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  const { id } = req.params; // Извлекаем ID поста из параметров запроса
+  const { posttitle } = req.body; // Получаем новое значение заголовка из тела запроса
+  try {
+    // Обновляем заголовок поста в базе данных
+    const editPost = await Post.update({ posttitle }, { where: { id } });
+    res.json(editPost); // Отправляем обновленный пост в ответе
+  } catch (error) {
+    console.log(error); // Логируем ошибку в случае неудачи
+  }
+});
 
-
+// Маршрут для удаления поста
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params; // Извлекаем ID поста из параметров запроса
+  try {
+    // Удаляем все реакции на пост перед его удалением (чтобы избежать проблем с внешними ключами)
+    await Postreaction.destroy({ where: { post_id: id } });
+    // Удаляем сам пост
+    await Post.destroy({ where: { id } });
+    res.sendStatus(200); // Отправляем статус 200 (успех) в ответ
+  } catch (error) {
+    console.log(error); // Логируем ошибку в случае неудачи
+  }
+});
 module.exports = router;

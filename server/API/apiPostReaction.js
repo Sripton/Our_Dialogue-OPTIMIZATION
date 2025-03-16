@@ -70,7 +70,7 @@ router.get("/getdislikepost", async (req, res) => {
 router.delete("/destroypostreaction/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    await Postreaction.destroy({ where: { post_id: id } });
+    await Post.destroy({ where: { id } });
     res.sendStatus(200); // Отправляем успешный статус
   } catch (error) {
     console.log(error); // Логируем ошибку

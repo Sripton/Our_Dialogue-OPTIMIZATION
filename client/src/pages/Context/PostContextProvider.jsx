@@ -6,6 +6,7 @@ import { UserContext } from "./UserContextProvider";
 const PostContext = React.createContext();
 
 export default function PostContextProvider({ children }) {
+  //---------------------------------------------------------------------------------
   // ------------> Логика для создания постов в компоненте Addposts.jsx <------------
   // Состояние для хранения значений полей формы
   const [inputsPosts, setInputsPosts] = useState({});
@@ -58,7 +59,57 @@ export default function PostContextProvider({ children }) {
     // что эффект выполняется только один раз при монтировании компонента
   }, []);
   // ------------> Логика для создания постов в компоненте Addposts.jsx <------------
+  //---------------------------------------------------------------------------------
 
+  // ------------> Логика для изменения и удаления  постов  <------------
+  //--------------------------------------------------------------------
+  // Состояние для хранения текста редактируемого поста
+  const [editPostText, setEditPostText] = useState({});
+
+  // Функция для отправки отредактированного поста на сервер
+  const submitEditPosts = async (e, post_id, PostEditActive) => {
+    e.preventDefault(); // Предотвращаем стандартное поведение формы
+    try {
+      // Отправляем PUT-запрос на сервер для обновления поста
+      const response = await axios.put(`/api/posts/${post_id}`, {
+        posttitle: editPostText, // Передаем новый заголовок поста
+      });
+      // Если сервер успешно обновил пост
+      if (response.status === 200) {
+        // Обновляем состояние постов, заменяя старый заголовок на новый
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === post_id ? { ...post, posttitle: editPostText } : post
+          )
+        );
+      }
+      // Закрываем режим редактирования поста
+      PostEditActive(false);
+    } catch (error) {
+      console.log(error); // Логируем ошибку в случае неудачи
+    }
+  };
+
+  // Функция для удаления поста
+  const deletePostHandler = async (id) => {
+    try {
+      // Отправляем DELETE-запрос на сервер для удаления поста
+      await axios
+        .delete(`/api/posts/${id}`)
+        .then(() =>
+          // Обновляем состояние постов, удаляя удаленный пост из списка
+          setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id))
+        )
+        .catch((err) => console.log(err));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // ------------> Логика для изменения и удаления  постов  <------------
+  //--------------------------------------------------------------------
+
+  //-------------------------------------------------------------------
   // ------------> Логика для создания реакций для постов <------------
   // Состояния для хранения лайков  поста
   const [likePost, setlikePost] = useState([]);
@@ -182,8 +233,9 @@ export default function PostContextProvider({ children }) {
       console.log(error);
     }
   };
-
   // ------------> Логика для создания реакций для постов  <------------
+  //--------------------------------------------------------------------
+
   return (
     <PostContext.Provider
       value={{
@@ -196,6 +248,11 @@ export default function PostContextProvider({ children }) {
         dislikePost,
         submitPostReaction,
         fetchReactionsPosts,
+        userIDSession,
+        editPostText,
+        setEditPostText,
+        submitEditPosts,
+        deletePostHandler,
       }}
     >
       {children}
