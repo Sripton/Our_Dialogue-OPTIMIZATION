@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import "./postslist.css";
+import { useParams } from "react-router-dom";
 import Postscard from "../Postscard";
 import { PostContext } from "../Context/PostContextProvider";
 
@@ -8,9 +9,8 @@ export default function Postslist() {
 
   return (
     <div className="posts-container">
-      {posts?.length && posts?.map((post) => (
-        <Postscard key={post.id} post={post} />
-      ))}
+      {posts?.length &&
+        posts?.map((post) => <Postscard key={post.id} post={post} />)}
     </div>
   );
 }

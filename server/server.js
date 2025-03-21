@@ -8,6 +8,7 @@ const apiUsersRouter = require("./API/apiUsersRouter"); // Импортируе�
 const apiSubjectsRouter = require("./API/apiSubjectsRouter");
 const apiPostsRouterjs = require("./API/apiPostsRouter");
 const apiPostReactionjs = require("./API/apiPostReaction");
+const apiCommentsRouterjs = require("./API/apiCommentsRouter");
 const cors = require("cors"); // Подключаем CORS для работы с запросами с других доменов
 
 dotenv.config(); // Загружаем переменные окружения из файла .env
@@ -74,6 +75,7 @@ app.use("/api/users", apiUsersRouter);
 app.use("/api/subjects", apiSubjectsRouter);
 app.use("/api/posts", apiPostsRouterjs);
 app.use("/api/postreactions", apiPostReactionjs);
+app.use("/api/comments", apiCommentsRouterjs);
 
 // Запуск сервера по указанному порту
 app.listen(PORT, () => console.log(`Server has started on ${PORT} port`));

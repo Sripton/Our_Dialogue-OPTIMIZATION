@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Subject, Post, User, Postreaction } = require("../db/models");
-
+const checkUserForPosts = require("../MidleWare/authPostMW");
 router.post("/:id", async (req, res) => {
   // Извлекаем параметр id из URL запроса
   const { id } = req.params;
@@ -44,7 +44,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", checkUserForPosts, async (req, res) => {
   const { id } = req.params; // Извлекаем ID поста из параметров запроса
   const { posttitle } = req.body; // Получаем новое значение заголовка из тела запроса
   try {

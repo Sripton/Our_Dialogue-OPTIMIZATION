@@ -4,8 +4,13 @@ import { NavLink } from "react-router-dom"; // Импортируем NavLink д
 import { PostContext } from "../Context/PostContextProvider";
 // Функциональный компонент для добавления постов
 export default function Addposts() {
+  //---------------------------------------------------------------------------------------------------
+  // Забираем данные из PostContext
   const { inputsPosts, inputsPostHandler, submitPostsHandler, id } =
     useContext(PostContext);
+  // Забираем данные из PostContext
+  //---------------------------------------------------------------------------------------------------
+
   return (
     <div className="post-container">
       <div className="post-content">

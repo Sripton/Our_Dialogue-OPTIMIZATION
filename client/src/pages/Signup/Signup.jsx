@@ -3,7 +3,12 @@ import "./signup.css";
 import { UserContext } from "../Context/UserContextProvider";
 
 export default function Signup() {
+  // ---------------------------------------------------------------------------------------------------
+  // Забираем данные из UserContext
   const { submitSignupHandler } = useContext(UserContext);
+  // Забираем данные из UserContext
+  // ---------------------------------------------------------------------------------------------------
+
   // Состояние для хранения введённых пользователем данных
   const [inputs, setInputs] = useState({
     login: "",

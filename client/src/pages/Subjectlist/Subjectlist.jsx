@@ -4,6 +4,8 @@ import "./subjectslist.css";
 import { SubjectsContext } from "../Context/SubjectsContextProvider";
 
 export default function Subjectlist() {
+  //---------------------------------------------------------------------------------------------------
+  // Забираем данные из SubjectContext
   const {
     subjects,
     handleClickTabs,
@@ -16,6 +18,9 @@ export default function Subjectlist() {
     canScrollRight,
     selectedTabId,
   } = useContext(SubjectsContext);
+  // Забираем данные из SubjectContext
+  //---------------------------------------------------------------------------------------------------
+
   return (
     <section className="main-container">
       <div className="tab-nav-bar">
@@ -70,7 +75,7 @@ export default function Subjectlist() {
               {/* Правая колонка с иконками */}
               <div className="right-column">
                 <div className="info">
-                  <NavLink to="/">
+                  <NavLink to={`/posts/${subject.id}`}>
                     <ion-icon class="info-icon" name="arrow-redo-outline" />
                   </NavLink>
 

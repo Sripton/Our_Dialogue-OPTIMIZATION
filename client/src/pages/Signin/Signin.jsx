@@ -4,12 +4,19 @@ import "./signin.css";
 import { UserContext } from "../Context/UserContextProvider";
 
 export default function Signin() {
+  // ---------------------------------------------------------------------------------------------------
+  // Забираем данные из UserContext
   const { submitSigninHandler } = useContext(UserContext);
+  // Забираем данные из UserContext
+  // ---------------------------------------------------------------------------------------------------
+
+  // Состояние для хранения введённых пользователем данных
   const [inputs, setInputs] = useState({
     login: "",
     password: "",
   });
 
+  // Функция для обработки изменения полей ввода
   const inputsHandler = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };

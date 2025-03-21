@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import "./contentlist.css";
+import { UserContext } from "../Context/UserContextProvider";
 
 // Компонент Contentlist отображает карусель directions и thumbnails
 export default function Contentlist({
@@ -26,6 +27,11 @@ export default function Contentlist({
       ...allThumbnails.slice(0, -1),
     ]);
   };
+  //---------------------------------------------------------------------------------------------------
+  // Забираем данные из UserContext
+  const { userIDSession } = useContext(UserContext);
+  // Забираем данные из UserContext
+  //---------------------------------------------------------------------------------------------------
 
   return (
     <div className="caorusel _next">
@@ -43,12 +49,18 @@ export default function Contentlist({
             />
             <div className="caorusel-content">
               <div className="caorusel-title">{direction.title}</div>
-              <NavLink
-                to={`/subjects/${direction.id}`}
-                className="caorusel-button"
-              >
-                Перейти
-              </NavLink>
+              {!userIDSession ? (
+                <NavLink to="/signin" className="caorusel-button">
+                  Перейти
+                </NavLink>
+              ) : (
+                <NavLink
+                  to={`/subjects/${direction.id}`}
+                  className="caorusel-button"
+                >
+                  Перейти
+                </NavLink>
+              )}
             </div>
           </div>
         ))}
