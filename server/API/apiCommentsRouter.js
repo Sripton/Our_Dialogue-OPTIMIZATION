@@ -1,5 +1,5 @@
 const express = require("express");
-const { Post, Comment } = require("../db/models");
+const { Post, Comment, User } = require("../db/models");
 const router = express.Router();
 
 // Обработка POST-запроса по маршруту /:id — добавление нового комментария к посту
@@ -31,6 +31,15 @@ router.get("/:id", async (req, res) => {
     // Ищем все комментарии в базе данных, у которых post_id совпадает с переданным ID
     const findAllCommentForPostID = await Comment.findAll({
       where: { post_id: id },
+      order: [["createdAt", "ASC"]],
+      include: [
+        { model: User, attributes: ["name"] },
+        {
+          model: Comment,
+          as: "ParentComment",
+          include: [{ model: User, attributes: ["name"] }],
+        },
+      ],
     });
     // Отправляем найденные комментарии клиенту
     res.json(findAllCommentForPostID);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { use, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { data, useParams } from "react-router-dom";
 import { UserContext } from "./UserContextProvider";
 
@@ -15,6 +15,9 @@ export default function PostContextProvider({ children }) {
 
   // Получаем параметр id из URL
   const { id } = useParams();
+
+  // Получаем ID и имя текущего пользователя из контекста
+  const { userIDSession, userNameSession } = useContext(UserContext);
 
   // Функция для обработки изменений в полях ввода формы
   const inputsPostHandler = (e) => {
@@ -35,10 +38,17 @@ export default function PostContextProvider({ children }) {
       // Если запрос успешен
       if (response.status === 200) {
         // Извлекаем данные из ответа
-        const { data } = response;
+        // const { data } = response;
         // Обновляем состояние posts, чтобы отобразить новый пост
         //  setPosts(data);
-        setPosts((prevPosts) => [...prevPosts, data]);
+        // const updatedPost = {
+        //   ...data,
+        //   User: {
+        //     name: userNameSession,
+        //   },
+        // };
+        const updatedPost = await axios.get(`/api/posts/${id}`);
+        setPosts(updatedPost.data);
       }
     } catch (error) {
       // Выводим ошибку в консоль, если запрос не удался
@@ -105,7 +115,6 @@ export default function PostContextProvider({ children }) {
       console.log(error);
     }
   };
-
   // ------------> Логика для изменения и удаления  постов  <------------
   //--------------------------------------------------------------------
 
@@ -115,8 +124,6 @@ export default function PostContextProvider({ children }) {
   const [likePost, setlikePost] = useState([]);
   // Состояния для хранения  дизлайков поста
   const [dislikePost, setDislikePost] = useState([]);
-  // Получаем ID текущего пользователя из контекста
-  const { userIDSession } = useContext(UserContext);
 
   //   Функция для получения всех лайков и дизлайков с сервера
   //  Вызывается при монтировании компонента и после обновления реакции
@@ -233,6 +240,9 @@ export default function PostContextProvider({ children }) {
       console.log(error);
     }
   };
+
+  // console.log('likePost', likePost);
+  // console.log('dislikePost', dislikePost);
   // ------------> Логика для создания реакций для постов  <------------
   //--------------------------------------------------------------------
 
@@ -249,6 +259,7 @@ export default function PostContextProvider({ children }) {
         submitPostReaction,
         fetchReactionsPosts,
         userIDSession,
+        userNameSession,
         editPostText,
         setEditPostText,
         submitEditPosts,

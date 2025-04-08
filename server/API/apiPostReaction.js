@@ -69,8 +69,16 @@ router.get("/getdislikepost", async (req, res) => {
 // Удаление всех реакций на конкретный пост
 router.delete("/destroypostreaction/:id", async (req, res) => {
   const { id } = req.params;
+  const { userID } = req.body;
   try {
-    await Post.destroy({ where: { id } });
+    // Так удаляются все реакции на данный пост. А надо удалить реакцию конкретного пользователя
+    // await Postreaction.destroy({ where: { post_id: id } });
+    await Postreaction.destroy({
+      where: {
+        post_id: id,
+        userID: userID,
+      },
+    });
     res.sendStatus(200); // Отправляем успешный статус
   } catch (error) {
     console.log(error); // Логируем ошибку

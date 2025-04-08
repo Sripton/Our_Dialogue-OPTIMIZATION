@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Subject, Post, User, Postreaction } = require("../db/models");
+const { Subject, Post, User, Postreaction, Comment } = require("../db/models");
 const checkUserForPosts = require("../MidleWare/authPostMW");
 router.post("/:id", async (req, res) => {
   // Извлекаем параметр id из URL запроса
@@ -34,7 +34,10 @@ router.get("/:id", async (req, res) => {
     // Выполняем поиск всех записей в модели Post, где subject_id равен полученному id
     const findAllPost = await Post.findAll({
       where: { subject_id: id },
-      include: [{ model: User }, { model: Subject }],
+      include: [
+        { model: User, attributes: ["name"] },
+        { model: Subject, attributes: ["subjectName"] },
+      ],
     });
     // Отправляем найденные записи в формате JSON в ответе
     res.json(findAllPost);
@@ -60,6 +63,7 @@ router.put("/:id", checkUserForPosts, async (req, res) => {
 router.delete("/:id", async (req, res) => {
   const { id } = req.params; // Извлекаем ID поста из параметров запроса
   try {
+    await Comment.destroy({ where: { post_id: id } });
     // Удаляем все реакции на пост перед его удалением (чтобы избежать проблем с внешними ключами)
     await Postreaction.destroy({ where: { post_id: id } });
     // Удаляем сам пост

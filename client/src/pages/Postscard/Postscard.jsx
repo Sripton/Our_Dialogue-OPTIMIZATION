@@ -23,6 +23,7 @@ export default function Postscard({ post }) {
     fetchReactionsPosts,
     submitPostReaction,
     userIDSession,
+    userNameSession,
     editPostText,
     setEditPostText,
     submitEditPosts,
@@ -92,37 +93,88 @@ export default function Postscard({ post }) {
   // Хук состояния для хранения массива комментариев
   const [comments, setComments] = useState([]);
 
-  // Обработчик отправки комментария
-  const submitCommentsHandler = async (e, post_id, showReplies) => {
-    e.preventDefault();
-    // Если поле пустое или только пробелы — очищаем и ничего не отправляем
-    if (!inputsComments.commenttitle.trim()) {
-      setInputsComments({ commenttitle: "" });
-    }
+  // Хук состояния для хранения ID комментария, на который сейчас отвечают
+  const [replyToCommentID, setReplyToCommentID] = useState(null);
+
+  // Обработчик клика по кнопке "Reply" — устанавливает или сбрасывает ID родительского комментария
+  const handleReplyToCommentID = (commentID) => {
+    setReplyToCommentID(commentID === replyToCommentID ? null : commentID);
+  };
+
+  // Функция для получения всех комментариев к текущему посту
+  const getCommentsAxios = async () => {
     try {
-      // Отправляем POST-запрос на сервер с текстом комментария
-      const response = await axios.post(`/api/comments/${post_id}`, {
-        commenttitle: inputsComments.commenttitle,
-      });
+      const response = await axios.get(`/api/comments/${post.id}`);
       if (response.status === 200) {
-        // Если всё успешно, добавляем новый комментарий в массив
-        const { data } = response;
-        const formattedComment = {
-          ...data,
-        };
-        setComments((prevComments) => [...prevComments, formattedComment]);
+        // Сохраняем полученные комментарии в состоянии
+        setComments(response.data);
       }
     } catch (error) {
       // Логируем ошибку, если запрос не удался
       console.log(error);
     }
-    showReplies(true);
+  };
+
+  // Обработчик отправки комментария (нового или ответа)
+  const submitCommentsHandler = async (e, post_id, parentID = null) => {
+    // Отменяем поведение формы по умолчанию
+    e.preventDefault();
+    // Если поле пустое или состоит только из пробелов — сбрасываем поле и ничего не делаем
+    if (!inputsComments.commenttitle.trim()) {
+      setInputsComments({ commenttitle: "" });
+      setReplyToCommentID(null);
+      return;
+    }
+    try {
+      // Отправляем POST-запрос на сервер с текстом комментария и ID родительского комментария (если есть)
+      const response = await axios.post(`/api/comments/${post_id}`, {
+        commenttitle: inputsComments.commenttitle,
+        parent_id: parentID,
+      });
+      if (response.status === 200) {
+        // Если всё успешно, добавляем новый комментарий в массив
+        const { data } = response;
+        // Создаем локальный объект комментария (связанный с тем, на который отвечают)
+        const formattedComment = {
+          ...data,
+          parentID: replyToCommentID,
+        };
+
+        if (parentID) {
+          // Если это ответ, добавляем его в RepliesComment соответствующего родительского комментария
+          setComments((prevComments) =>
+            prevComments.map((comment) =>
+              comment.id === replyToCommentID
+                ? {
+                    ...comment,
+                    RepliesComment: [
+                      ...(comment.RepliesComment || []),
+                      formattedComment,
+                    ],
+                  }
+                : comment
+            )
+          );
+          setReplyToCommentID(null); // сбрасываем форму ответа
+        } else {
+          // Если это обычный комментарий (не ответ), просто добавляем его в общий список
+          setComments((prevComments) => [...prevComments, formattedComment]);
+          setShowReplies(false); // Скрываем ответы
+        }
+        // После локального обновления заново запрашиваем комментарии с сервера
+        await getCommentsAxios();
+        setInputsComments({ commenttitle: "" }); // Очищаем текстовое поле комментария
+      }
+    } catch (error) {
+      // Логируем ошибку, если запрос не удался
+      console.log(error);
+    }
   };
 
   // Хук useEffect выполняется при монтировании компонента или при изменении post.id
-  useEffect(async () => {
+  useEffect(() => {
     // Отправляем GET-запрос на сервер, чтобы получить комментарии к посту
-    await axios
+    axios
       .get(`/api/comments/${post.id}`)
       // При успешном ответе сохраняем полученные комментарии в состояние
       .then((response) => setComments(response.data))
@@ -132,10 +184,33 @@ export default function Postscard({ post }) {
   // Логика для создания и получения комментариев
   // ---------------------------------------------------------------------------------------------------
 
+  // ---------------------------------------------------------------------------------------------------
+  // Логика для кнопки отображения комментариев
+  // Состояние, определяющее, отображаются ли комментарии или скрыты
+  const [showComments, setShowComments] = useState(false);
+
+  // Функция-обработчик, которая переключает состояние отображения комментариев
+  // Если комментарии были скрыты — покажет их, и наоборот
+  const showCommentsHandler = () => {
+    setShowComments(!showComments);
+  };
+  // Логика для кнопки отображения комментариев
+  // --------------------------------------------------------------------------------------------------
+
+  // ---------------------------------------------------------------------------------------------------
+  // Логика создания реакций для комменатриев
+
+  // Логика создания реакций для комменатриев
+  // ---------------------------------------------------------------------------------------------------
+
   return (
     <div className={`post-section ${isDotsActive ? "showActions" : ""}`}>
-      <button type="button" className="toggle-posts-btn">
-        Комментарии
+      <button
+        type="button"
+        className="toggle-posts-btn"
+        onClick={showCommentsHandler}
+      >
+        {`${showComments ? "скрыть" : "Комментарии"} ${comments.length} `}
       </button>
       <div className="post-list">
         <div className="post">
@@ -174,15 +249,15 @@ export default function Postscard({ post }) {
               <ion-icon class="thumbs" name="thumbs-down-outline" />
               {postDislikes ? postDislikes.length : 0}
             </button>
-            <button
-              type="button"
-              className="reply-btn"
-              onClick={handleShowReplies}
-            >
-              Reply
-            </button>
+
             {userIDSession !== post.user_id ? (
-              ""
+              <button
+                type="button"
+                className="reply-btn"
+                onClick={handleShowReplies}
+              >
+                Reply
+              </button>
             ) : (
               <>
                 <button
@@ -212,11 +287,7 @@ export default function Postscard({ post }) {
           </div>
           <div className="replies">
             {showReplies && (
-              <form
-                onSubmit={(e) =>
-                  submitCommentsHandler(e, post.id, () => showReplies(false))
-                }
-              >
+              <form onSubmit={(e) => submitCommentsHandler(e, post.id)}>
                 <div id="reply-form-template" className="add-comment">
                   <textarea
                     name="commenttitle"
@@ -229,8 +300,63 @@ export default function Postscard({ post }) {
               </form>
             )}
             {comments?.map((comment) => (
-              <div className="comments-underpost">
-                <p key={comment.id}>{comment.commenttitle}</p>
+              <div
+                className={`comments-underpost ${showComments ? "" : "hidden"}`}
+                key={comment.id}
+              >
+                <p className="comment-text">{comment.commenttitle}</p>
+
+                <div className="comment-actions">
+                  <button type="button" className="like-btn">
+                    <ion-icon class="thumbs" name="thumbs-up-outline" />
+                  </button>
+                  <button type="button" className="dislike-btn">
+                    <ion-icon class="thumbs" name="thumbs-down-outline" />
+                  </button>
+                  {userIDSession !== comment.user_id ? (
+                    <button
+                      type="button"
+                      className="reply-btn"
+                      onClick={() => handleReplyToCommentID(comment.id)}
+                    >
+                      Reply
+                    </button>
+                  ) : (
+                    <>
+                      <button type="button" className="edit-btn">
+                        Edit
+                      </button>
+                      <button type="button" className="delete-btn">
+                        Delete
+                      </button>
+                    </>
+                  )}
+                  {comment?.ParentComment === null ? (
+                    <small className="post-note">{`${comment?.User?.name} ответил  (${post?.User?.name})`}</small>
+                  ) : (
+                    <small className="post-note">{`${comment?.User?.name} ответил  (${comment?.ParentComment?.User?.name})`}</small>
+                  )}
+
+                  {replyToCommentID === comment.id ? (
+                    <form
+                      onSubmit={(e) =>
+                        submitCommentsHandler(e, post.id, comment.id)
+                      }
+                    >
+                      <div id="reply-form-template" className="add-comment">
+                        <textarea
+                          name="commenttitle"
+                          value={inputsComments.commenttitle}
+                          onChange={inputsCommentsHandler}
+                          placeholder="Write a reply..."
+                        />
+                        <button type="submit">Post Comment</button>
+                      </div>
+                    </form>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             ))}
           </div>
