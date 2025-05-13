@@ -1,5 +1,5 @@
 const express = require("express");
-const { Post, Comment, User } = require("../db/models");
+const { Post, Comment, User, Commentreaction } = require("../db/models");
 const router = express.Router();
 
 // Обработка POST-запроса по маршруту /:id — добавление нового комментария к посту
@@ -39,12 +39,36 @@ router.get("/:id", async (req, res) => {
           as: "ParentComment",
           include: [{ model: User, attributes: ["name"] }],
         },
+        { model: Commentreaction, as: "reactions" },
       ],
     });
     // Отправляем найденные комментарии клиенту
     res.json(findAllCommentForPostID);
   } catch (error) {
     // В случае ошибки выводим её в консоль
+    console.log(error);
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { commenttitle } = req.body;
+  try {
+    await Comment.update({ commenttitle }, { where: { id } });
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Commentreaction.destroy({ where: { comment_id: id } });
+    await Comment.destroy({ where: { parent_id: id } });
+    await Comment.destroy({ where: { id } });
+    res.sendStatus(200);
+  } catch (error) {
     console.log(error);
   }
 });

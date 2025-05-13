@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { data, useParams } from "react-router-dom";
+import { data, useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "./UserContextProvider";
 
 const PostContext = React.createContext();
@@ -12,6 +12,7 @@ export default function PostContextProvider({ children }) {
   const [inputsPosts, setInputsPosts] = useState({});
   // Состояние для хранения списка постов, полученных от сервера
   const [posts, setPosts] = useState([]);
+  const navigate = useNavigate();
 
   // Получаем параметр id из URL
   const { id } = useParams();
@@ -49,6 +50,7 @@ export default function PostContextProvider({ children }) {
         // };
         const updatedPost = await axios.get(`/api/posts/${id}`);
         setPosts(updatedPost.data);
+        navigate(`/posts/${id}`);
       }
     } catch (error) {
       // Выводим ошибку в консоль, если запрос не удался
@@ -240,9 +242,6 @@ export default function PostContextProvider({ children }) {
       console.log(error);
     }
   };
-
-  // console.log('likePost', likePost);
-  // console.log('dislikePost', dislikePost);
   // ------------> Логика для создания реакций для постов  <------------
   //--------------------------------------------------------------------
 
@@ -259,7 +258,6 @@ export default function PostContextProvider({ children }) {
         submitPostReaction,
         fetchReactionsPosts,
         userIDSession,
-        userNameSession,
         editPostText,
         setEditPostText,
         submitEditPosts,

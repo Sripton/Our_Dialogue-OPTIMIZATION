@@ -2,7 +2,7 @@ import React, { useState, useContext, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom"; // Используется для навигации между страницами
 import "./navbar.css";
 import { UserContext } from "../Context/UserContextProvider";
-
+import logo from "../../assets/logo.png";
 // Компонент Navbar — верхняя навигационная панель сайта
 export default function Navbar() {
   const { userIDSession, userNameSession, logoutHandler } =
@@ -57,7 +57,21 @@ export default function Navbar() {
     <div className="wrapper">
       <header className="header">
         <div className="header-container">
-          <a href="#" className="header-logo" />
+          <a
+            href="#"
+            className="header-logo"
+            style={{
+              backgroundImage: `url(${logo})`,
+              width: "60px",
+              height: "60px",
+              backgroundSize: "cover",
+              borderRadius: "10%",
+              WebkitMaskImage:
+                "linear-gradient(to left, transparent 3px, black 20px)",
+              maskImage:
+                "linear-gradient(to left, transparent 3px, black 20px)",
+            }}
+          />
           {/* Основное меню */}
           <div className="header-menu menu">
             <div

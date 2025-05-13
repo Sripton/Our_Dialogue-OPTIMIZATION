@@ -60,7 +60,7 @@ router.put("/:id", checkUserForPosts, async (req, res) => {
 });
 
 // Маршрут для удаления поста
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", checkUserForPosts, async (req, res) => {
   const { id } = req.params; // Извлекаем ID поста из параметров запроса
   try {
     await Comment.destroy({ where: { post_id: id } });
