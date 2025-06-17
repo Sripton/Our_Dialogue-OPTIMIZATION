@@ -10,7 +10,7 @@ export default function Addposts() {
     useContext(PostContext);
   // Забираем данные из PostContext
   //---------------------------------------------------------------------------------------------------
-
+  console.log("item");
   return (
     <div className="post-container">
       <div className="post-content">

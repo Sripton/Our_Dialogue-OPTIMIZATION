@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, memo } from "react";
 import { data, useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "./UserContextProvider";
 
@@ -132,13 +132,13 @@ export default function PostContextProvider({ children }) {
   const fetchReactionsPosts = async () => {
     try {
       // Запрос на получение всех лайков
-      const likeReponse = await axios.get(`/api/postreactions/getlikepost`);
+      const likeResponse = await axios.get(`/api/postreactions/getlikepost`);
       // Запрос на получение всех дизлайков
       const dislikeResponse = await axios.get(
         `/api/postreactions/getdislikepost`
       );
       // Обновляем состояния лайков и дизлайков
-      setlikePost(likeReponse.data || []);
+      setlikePost(likeResponse.data || []);
       setDislikePost(dislikeResponse.data || []);
     } catch (error) {
       console.log(error);

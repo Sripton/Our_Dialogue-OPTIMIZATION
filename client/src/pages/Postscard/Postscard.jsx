@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, memo } from "react";
 import "./postscard.css";
 import axios from "axios";
 import { PostContext } from "../Context/PostContextProvider";
 
-export default function Postscard({ post }) {
+function Postscard({ post, postLikeMapMemo, postDislikeMapMemo }) {
   // --------------------------------------------------------
   // Логика для кнопки с тремя точками
   // Состояние для управления отображением кнопки с тремя точками
@@ -18,8 +18,6 @@ export default function Postscard({ post }) {
   //---------------------------------------------------------------------------------------------------
   // Забираем данные из PostContext
   const {
-    likePost,
-    dislikePost,
     fetchReactionsPosts,
     submitPostReaction,
     userIDSession,
@@ -33,12 +31,7 @@ export default function Postscard({ post }) {
 
   // ---------------------------------------------------------------------------------------------------
   // Логика для реакций на посты
-  // Фильтруем массив лайков, оставляя только те, которые относятся к текущему посту
-  const postLikes = (likePost || []).filter((like) => like.post_id === post.id);
-  // Фильтруем массив дизлайков, оставляя только те, которые относятся к текущему посту
-  const postDislikes = (dislikePost || []).filter(
-    (dislike) => dislike.post_id === post.id
-  );
+
   // Вызываем функцию загрузки реакций при монтировании компонента
   useEffect(() => {
     fetchReactionsPosts();
@@ -246,8 +239,8 @@ export default function Postscard({ post }) {
 
   // ---------------------------------------------------------------------------------------------------
   // Логика создания реакций для комменатриев
-  // Функция обновления реакций к комментариям
 
+  // Функция обновления реакций к комментариям
   const updateReactions = (reactions, reaction_type, userID, commentID) => {
     // Проверяем, существует ли уже реакция от этого пользователя
     const existsReactions = reactions.find(
@@ -304,6 +297,7 @@ export default function Postscard({ post }) {
   // Логика создания реакций для комменатриев
   // ---------------------------------------------------------------------------------------------------
 
+  // console.log("Item Postcard");
   return (
     <div className={`post-section ${isDotsActive ? "showActions" : ""}`}>
       {/* Кнопка для показа/скрытия комментариев */}
@@ -342,7 +336,8 @@ export default function Postscard({ post }) {
               onClick={() => submitPostReaction(post.id, "like")}
             >
               <ion-icon class="thumbs" name="thumbs-up-outline" />
-              {postLikes ? postLikes.length : 0}
+              {/* {postLikes ? postLikes.length : 0} */}
+              {postLikeMapMemo[post.id]?.length || 0}
             </button>
             <button
               type="button"
@@ -350,7 +345,8 @@ export default function Postscard({ post }) {
               onClick={() => submitPostReaction(post.id, "dislike")}
             >
               <ion-icon class="thumbs" name="thumbs-down-outline" />
-              {postDislikes ? postDislikes.length : 0}
+              {/* {postDislikes ? postDislikes.length : 0} */}
+              {postDislikeMapMemo[post.id]?.length || 0}
             </button>
             {/* Логика для определения какие кнопки должен видеть пользователь.
                   Если пользовтель не является автором поста он видит кнопки reply */}
@@ -540,3 +536,42 @@ export default function Postscard({ post }) {
     </div>
   );
 }
+// Тестировоние 1
+// post не перерендривается
+// function areEqual(prevProps, nextProps) {
+// const keys = Object.keys(prevProps);
+// for (const key of keys) {
+//   if (prevProps[key] !== nextProps[key]) {
+//     console.log(`Prop "${key}" changed:`);
+//     console.log("Previous:", prevProps[key]);
+//     console.log("Next:", nextProps[key]);
+//     return false;
+//   }
+// }
+// return true;
+// }
+
+// Тестировоние 2
+// props.post не изменился (по ссылке) между предыдущим и следующим рендером.
+// function areEqual(prevProps, nextProps) {
+//   console.log("🧪 areEqual called");
+
+//   return !Object.keys(prevProps).some((key) => {
+//     const isDifferent = prevProps[key] !== nextProps[key];
+//     if (isDifferent) {
+//       console.log(`❗ Prop "${key}" changed`);
+//       console.log("Previous:", prevProps[key]);
+//       console.log("Next:", nextProps[key]);
+//     }
+//     return isDifferent;
+//   });
+// }
+
+// Тестировоние 3
+// function areEqual(prevProps, nextProps) {
+//   console.log(prevProps.post === nextProps.post); true
+//   console.log(prevProps.postLikes.length === nextProps.postLikes.length); true
+//   console.log(prevProps.postDislikes.length === nextProps.postDislikes.length); true
+// }
+
+export default memo(Postscard);

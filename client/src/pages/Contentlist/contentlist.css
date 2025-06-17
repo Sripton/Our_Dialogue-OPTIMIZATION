@@ -34,7 +34,8 @@
 }
 .caorusel .caorusel-item .caorusel-content .caorusel-button {
   padding: 10px 25px;
-  font-size: 20px;
+  font-size: 30px;
+  font-weight: bold;
   border-radius: 5px;
   letter-spacing: 2px;
   background-color: transparent;
@@ -44,6 +45,8 @@
   cursor: pointer;
   text-decoration: none;
   transition: all 0.3s ease 0s;
+  position: relative;
+  top: 30px;
 }
 .caorusel .caorusel-item .caorusel-content .caorusel-button:hover {
   cursor: pointer;
@@ -175,12 +178,23 @@
     font-size: 3em;
   }
   .caorusel .thumbnail-list {
-    left: 30%;
+    left: 10%;
+  }
+  .arrows {
+    right: 65%;
+  }
+
+  .arrows button {
+    padding: 7px 20px;
   }
 }
 
 @media (max-width: 500px) {
   .caorusel .thumbnail-list {
-    left: 5%;
+    left: 0%;
   }
+    .arrows {
+    right:61%;
+  }
+  
 }

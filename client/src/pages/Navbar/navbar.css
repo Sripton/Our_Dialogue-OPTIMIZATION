@@ -34,7 +34,9 @@
 }
 .menu-list {
   position: relative;
+  list-style: none;
 }
+
 .menu-list > li {
   margin-right: 50px;
 }

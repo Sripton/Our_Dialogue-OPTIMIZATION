@@ -38,4 +38,11 @@ router.post(`/:id`, async (req, res) => {
     console.log(error);
   }
 });
+
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  const com = await Comment.findByPk(id);
+  const all = await Commentreaction.findAll({ where: { comment_id: com.id } });
+  res.json(all);
+});
 module.exports = router;
