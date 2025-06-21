@@ -3,7 +3,16 @@ import "./postscard.css";
 import axios from "axios";
 import { PostContext } from "../Context/PostContextProvider";
 
-function Postscard({ post, postLikeMapMemo, postDislikeMapMemo }) {
+function Postscard({
+  post, // посты
+  postLikeMapMemo, // лайки на посты
+  postDislikeMapMemo, // дизлайки на посты
+  submitPostReaction, // создание реакций на посты
+  deletePostHandler, // удаление постов
+  editPostText, // изменение текста поста
+  setEditPostText, // состояние которое следит за изменение текста поста
+  submitEditPosts, // функция изменения постов
+}) {
   // --------------------------------------------------------
   // Логика для кнопки с тремя точками
   // Состояние для управления отображением кнопки с тремя точками
@@ -17,26 +26,8 @@ function Postscard({ post, postLikeMapMemo, postDislikeMapMemo }) {
 
   //---------------------------------------------------------------------------------------------------
   // Забираем данные из PostContext
-  const {
-    fetchReactionsPosts,
-    submitPostReaction,
-    userIDSession,
-    editPostText,
-    setEditPostText,
-    submitEditPosts,
-    deletePostHandler,
-  } = useContext(PostContext);
+  const { userIDSession } = useContext(PostContext);
   // Забираем данные из PostContext
-  //---------------------------------------------------------------------------------------------------
-
-  // ---------------------------------------------------------------------------------------------------
-  // Логика для реакций на посты
-
-  // Вызываем функцию загрузки реакций при монтировании компонента
-  useEffect(() => {
-    fetchReactionsPosts();
-  }, []); // Пустой массив зависимостей означает, что эффект сработает только один раз при загрузке компонента
-  // Логика для реакций на посты
   //---------------------------------------------------------------------------------------------------
 
   // ---------------------------------------------------------------------------------------------------
@@ -314,7 +305,11 @@ function Postscard({ post, postLikeMapMemo, postDislikeMapMemo }) {
           {isPostEditActive ? (
             <form
               className="form-post"
-              onSubmit={(e) => submitEditPosts(e, post.id, setIsPostEditActive)}
+              onSubmit={(e) =>
+                submitEditPosts(e, post.id, editPostText, () =>
+                  setIsPostEditActive(false)
+                )
+              }
             >
               <textarea
                 name="posttitle"

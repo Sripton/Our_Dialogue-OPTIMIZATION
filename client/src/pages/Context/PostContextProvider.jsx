@@ -1,5 +1,11 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState, memo } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  memo,
+  useCallback,
+} from "react";
 import { data, useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "./UserContextProvider";
 
@@ -18,7 +24,7 @@ export default function PostContextProvider({ children }) {
   const { id } = useParams();
 
   // Получаем ID и имя текущего пользователя из контекста
-  const { userIDSession, userNameSession } = useContext(UserContext);
+  const { userIDSession } = useContext(UserContext);
 
   // Функция для обработки изменений в полях ввода формы
   const inputsPostHandler = (e) => {
@@ -79,28 +85,31 @@ export default function PostContextProvider({ children }) {
   const [editPostText, setEditPostText] = useState({});
 
   // Функция для отправки отредактированного поста на сервер
-  const submitEditPosts = async (e, post_id, PostEditActive) => {
-    e.preventDefault(); // Предотвращаем стандартное поведение формы
-    try {
-      // Отправляем PUT-запрос на сервер для обновления поста
-      const response = await axios.put(`/api/posts/${post_id}`, {
-        posttitle: editPostText, // Передаем новый заголовок поста
-      });
-      // Если сервер успешно обновил пост
-      if (response.status === 200) {
-        // Обновляем состояние постов, заменяя старый заголовок на новый
-        setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === post_id ? { ...post, posttitle: editPostText } : post
-          )
-        );
+  const submitEditPosts = useCallback(
+    async (e, post_id, newText, setIsPostEditActive) => {
+      e.preventDefault(); // Предотвращаем стандартное поведение формы
+      try {
+        // Отправляем PUT-запрос на сервер для обновления поста
+        const response = await axios.put(`/api/posts/${post_id}`, {
+          posttitle: newText, // Передаем новый заголовок поста
+        });
+        // Если сервер успешно обновил пост
+        if (response.status === 200) {
+          // Обновляем состояние постов, заменяя старый заголовок на новый
+          setPosts((prevPosts) =>
+            prevPosts.map((post) =>
+              post.id === post_id ? { ...post, posttitle: newText } : post
+            )
+          );
+        }
+        // Закрываем режим редактирования поста
+        setIsPostEditActive(false);
+      } catch (error) {
+        console.log(error); // Логируем ошибку в случае неудачи
       }
-      // Закрываем режим редактирования поста
-      PostEditActive(false);
-    } catch (error) {
-      console.log(error); // Логируем ошибку в случае неудачи
-    }
-  };
+    },
+    [setPosts] // эта функция использует setPosts
+  );
 
   // Функция для удаления поста
   const deletePostHandler = async (id) => {
