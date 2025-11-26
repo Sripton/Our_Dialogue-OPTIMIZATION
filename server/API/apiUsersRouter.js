@@ -74,7 +74,7 @@ router.get("/checkUser", (req, res) => {
     });
   }
   // Если пользователь не авторизован, отправляем статус 401 (Unauthorized)
-  return res.sendStatus(401);
+  return res.status(401).json({ message: "Пользователь не авторизован" });
 });
 
 router.get("/logout", (req, res) => {
